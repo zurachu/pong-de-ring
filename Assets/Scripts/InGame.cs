@@ -9,8 +9,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Wall wallPrefab;
     [SerializeField] int numVertexes;
-    [SerializeField] List<KeyCode> keyboardKeyCodes;
-    [SerializeField] List<KeyCode> keyPadKeyCodes;
+    [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] float startForce;
 
     List<Vertex> vertexes;
@@ -37,9 +36,13 @@ public class InGame : MonoBehaviour
     {
         for (var i = 0; i < numVertexes; i++)
         {
-            if (Input.GetKeyUp(keyboardKeyCodes[i]) || Input.GetKeyUp(keyPadKeyCodes[i]))
+            foreach (var keyAssignment in keyAssignments)
             {
-                OnVertexClicked(vertexes[i]);
+                if (Input.GetKeyUp(keyAssignment.Code(i)))
+                {
+                    OnVertexClicked(vertexes[i]);
+                    break;
+                }
             }
         }
     }

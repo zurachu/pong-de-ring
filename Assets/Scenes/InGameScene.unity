@@ -112,6 +112,66 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &28981216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28981218}
+  - component: {fileID: 28981217}
+  m_Layer: 0
+  m_Name: KeypadAssignment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &28981217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28981216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39e17f8b308540b4a449059dd54590b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyInfos:
+  - keyCode: 264
+    character: 56
+  - keyCode: 263
+    character: 55
+  - keyCode: 260
+    character: 52
+  - keyCode: 257
+    character: 49
+  - keyCode: 258
+    character: 50
+  - keyCode: 259
+    character: 51
+  - keyCode: 262
+    character: 54
+  - keyCode: 265
+    character: 57
+--- !u!4 &28981218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28981216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &51312190
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +201,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &379964133
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 379964135}
+  - component: {fileID: 379964134}
+  m_Layer: 0
+  m_Name: KeyboardAssignment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &379964134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379964133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39e17f8b308540b4a449059dd54590b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyInfos:
+  - keyCode: 56
+    character: 56
+  - keyCode: 55
+    character: 55
+  - keyCode: 117
+    character: 85
+  - keyCode: 106
+    character: 74
+  - keyCode: 107
+    character: 75
+  - keyCode: 108
+    character: 76
+  - keyCode: 111
+    character: 79
+  - keyCode: 57
+    character: 57
+--- !u!4 &379964135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379964133}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -275,8 +395,9 @@ MonoBehaviour:
   wallPrefab: {fileID: 7178106298625755247, guid: 115ed18bc56224fbf91652d61af44cf7,
     type: 3}
   numVertexes: 8
-  keyboardKeyCodes: 3800000037000000750000006a0000006b0000006c0000006f00000039000000
-  keyPadKeyCodes: 0801000007010000040100000101000002010000030100000601000009010000
+  keyAssignments:
+  - {fileID: 379964134}
+  - {fileID: 28981217}
   startForce: 0.1
 --- !u!1 &1117922608
 GameObject:
