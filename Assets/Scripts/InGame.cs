@@ -10,6 +10,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Wall wallPrefab;
     [SerializeField] int numVertexes;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
+    [SerializeField] ColorIterator colorIterator;
     [SerializeField] float startForce;
 
     List<Vertex> vertexes;
@@ -58,23 +59,27 @@ public class InGame : MonoBehaviour
     {
         if (selectedVertex == vertex)
         {
-            vertex.SetSelecting(false);
+            vertex.ResetColor();
+            colorIterator.Next();
             selectedVertex = null;
         }
         else if (selectedVertex == null)
         {
-            vertex.SetSelecting(true);
+            vertex.SetColor(colorIterator.Current);
             selectedVertex = vertex;
         }
         else
         {
             CreateNewWall(selectedVertex, vertex);
+            colorIterator.Next();
             selectedVertex = null;
         }
     }
 
     void CreateNewWall(Vertex v1, Vertex v2)
     {
+        var color = colorIterator.Current;
+
         if (wall == null)
         {   // 使い回す
             wall = Instantiate(wallPrefab);
@@ -88,9 +93,18 @@ public class InGame : MonoBehaviour
         var rad = Mathf.Atan2(diff.y, diff.x);
         wall.transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg *rad);
 
+        wall.SetColor(color);
+
         foreach (var vertex in vertexes)
         {
-            vertex.SetSelecting(vertex == v1 || vertex == v2);
+            if (vertex == v1 || vertex == v2)
+            {
+                vertex.SetColor(color);
+            }
+            else
+            {
+                vertex.ResetColor();
+            }
         }
     }
 }

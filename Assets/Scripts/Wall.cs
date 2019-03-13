@@ -15,4 +15,10 @@ public class Wall : MonoBehaviour
     {
         
     }
+
+    public void SetColor(Color color)
+    {
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = color;
+    }
 }

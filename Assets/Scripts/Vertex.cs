@@ -23,7 +23,7 @@ public class Vertex : MonoBehaviour, IPointerClickHandler
     {
         this.parent = parent;
         transform.localPosition = localPosition;
-        SetSelecting(false);
+        ResetColor();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -34,9 +34,14 @@ public class Vertex : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void SetSelecting(bool selecting)
+    public void SetColor(Color color)
     {
         var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = selecting ? Color.red : Color.gray;
+        spriteRenderer.color = color;
+    }
+
+    public void ResetColor()
+    {
+        SetColor(Color.gray);
     }
 }
