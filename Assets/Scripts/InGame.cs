@@ -89,18 +89,8 @@ public class InGame : MonoBehaviour
         if (wall == null)
         {   // 使い回す
             wall = Instantiate(wallPrefab);
-            wall.Initialize(this);
         }
-
-        var position1 = v1.transform.localPosition;
-        var position2 = v2.transform.localPosition;
-        wall.transform.localPosition = (position1 + position2) / 2;
-
-        var diff = position2 - position1;
-        var rad = Mathf.Atan2(diff.y, diff.x);
-        wall.transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg *rad);
-
-        wall.SetColor(color);
+        wall.Initialize(this, v1.transform.localPosition, v2.transform.localPosition, color);
 
         foreach (var vertex in vertexes)
         {
