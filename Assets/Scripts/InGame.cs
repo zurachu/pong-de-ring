@@ -19,6 +19,7 @@ public class InGame : MonoBehaviour
     Vertex selectedVertex;
     Wall wall;
 
+    int ballCount;
     int gotCoinCount;
 
     // Start is called before the first frame update
@@ -35,6 +36,7 @@ public class InGame : MonoBehaviour
             vertexes.Add(vertex);
         }
 
+        ballCount = 1;
         gotCoinCount = 0;
         CreateNewCoin();
     }
@@ -72,6 +74,12 @@ public class InGame : MonoBehaviour
         gotCoinCount++;
         AddScore(gotCoinCount * 100);
         CreateNewCoin();
+    }
+
+    public void OnBallOutOfBounds(GameObject go)
+    {
+        ballCount--;
+        Destroy(go);
     }
 
     void AddScore(int score)
