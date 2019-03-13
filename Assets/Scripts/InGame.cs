@@ -18,6 +18,7 @@ public class InGame : MonoBehaviour
     List<Vertex> vertexes;
     Vertex selectedVertex;
     Wall wall;
+    Coin coin;
 
     int ballCount;
     int gotCoinCount;
@@ -38,7 +39,6 @@ public class InGame : MonoBehaviour
 
         ballCount = 1;
         gotCoinCount = 0;
-        CreateNewCoin();
     }
 
     // Update is called once per frame
@@ -67,13 +67,17 @@ public class InGame : MonoBehaviour
     public void OnBallHitWall()
     {
         AddScore(1);
+        if (coin == null)
+        {
+            CreateNewCoin();
+        }
     }
 
     public void OnGetCoin()
     {
         gotCoinCount++;
         AddScore(gotCoinCount * 100);
-        CreateNewCoin();
+        coin = null;
     }
 
     public void OnBallOutOfBounds(GameObject go)
@@ -133,7 +137,12 @@ public class InGame : MonoBehaviour
 
     void CreateNewCoin()
     {
-        var coin = Instantiate(coinPrefab);
+        if (coin != null)
+        {
+            return;
+        }
+
+        coin = Instantiate(coinPrefab);
 
         Vector3 position;
         var topPosition = topVertexTransform.localPosition;
