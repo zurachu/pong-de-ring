@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
+    InGame parent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +16,19 @@ public class Wall : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Initialize(InGame parent)
+    {
+        this.parent = parent;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Ball") // 仮
+        {
+            parent.OnBallHitWall();
+        }
     }
 
     public void SetColor(Color color)

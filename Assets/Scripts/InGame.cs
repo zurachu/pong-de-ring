@@ -9,6 +9,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Wall wallPrefab;
     [SerializeField] int numVertexes;
+    [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
     [SerializeField] float startForce;
@@ -55,6 +56,11 @@ public class InGame : MonoBehaviour
         ball.AddForce(vec, ForceMode2D.Impulse);
     }
 
+    public void OnBallHitWall()
+    {
+        scoreDisplay.Score = scoreDisplay.Score + 1;
+    }
+
     public void OnVertexClicked(Vertex vertex)
     {
         if (selectedVertex == vertex)
@@ -83,6 +89,7 @@ public class InGame : MonoBehaviour
         if (wall == null)
         {   // 使い回す
             wall = Instantiate(wallPrefab);
+            wall.Initialize(this);
         }
 
         var position1 = v1.transform.localPosition;
