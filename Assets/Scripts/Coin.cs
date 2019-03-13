@@ -28,7 +28,7 @@ public class Coin : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.name == "Ball") // 仮
+        if (collider.GetComponent<Ball>() != null)
         {
             if (alive)
             {

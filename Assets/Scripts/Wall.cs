@@ -34,7 +34,7 @@ public class Wall : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Ball") // 仮
+        if (collision.gameObject.GetComponent<Ball>() != null)
         {
             parent.OnBallHitWall();
         }

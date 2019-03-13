@@ -20,9 +20,10 @@ public class AliveField : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.name == "Ball") // 仮
+        var ball = collider.GetComponent<Ball>();
+        if (ball != null)
         {
-            parent.OnBallOutOfBounds(collider.gameObject);
+            parent.OnBallOutOfBounds(ball);
         }
     }
 }

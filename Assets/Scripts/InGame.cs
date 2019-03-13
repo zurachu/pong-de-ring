@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InGame : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D ball;
     [SerializeField] Transform topVertexTransform;
     [SerializeField] Vertex vertexPrefab;
+    [SerializeField] Ball ballPrefab;
     [SerializeField] Wall wallPrefab;
     [SerializeField] Coin coinPrefab;
     [SerializeField] int numVertexes;
@@ -17,10 +18,10 @@ public class InGame : MonoBehaviour
 
     List<Vertex> vertexes;
     Vertex selectedVertex;
+    List<Ball> balls;
     Wall wall;
     Coin coin;
 
-    int ballCount;
     int gotCoinCount;
 
     // Start is called before the first frame update
@@ -37,7 +38,6 @@ public class InGame : MonoBehaviour
             vertexes.Add(vertex);
         }
 
-        ballCount = 1;
         gotCoinCount = 0;
     }
 
@@ -59,9 +59,9 @@ public class InGame : MonoBehaviour
 
     public void StartGame()
     {
-        var vec = new Vector2(startForce, 0f);
-        vec = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)) * vec;
-        ball.AddForce(vec, ForceMode2D.Impulse);
+        balls = new List<Ball>();
+        AddNewBall();
+        balls[0].StartMove();
     }
 
     public void OnBallHitWall()
@@ -80,10 +80,10 @@ public class InGame : MonoBehaviour
         coin = null;
     }
 
-    public void OnBallOutOfBounds(GameObject go)
+    public void OnBallOutOfBounds(Ball ball)
     {
-        ballCount--;
-        Destroy(go);
+        balls.Remove(ball);
+        Destroy(ball.gameObject);
     }
 
     void AddScore(int score)
@@ -110,6 +110,13 @@ public class InGame : MonoBehaviour
             colorIterator.Next();
             selectedVertex = null;
         }
+    }
+
+    Ball AddNewBall()
+    {
+        var ball = Instantiate(ballPrefab);
+        balls.Add(ball);
+        return ball;
     }
 
     void CreateNewWall(Vertex v1, Vertex v2)
@@ -151,7 +158,7 @@ public class InGame : MonoBehaviour
             var rate = Random.Range(0f, 0.9f);
             var angle = Random.Range(0f, 360f);
             position = Quaternion.Euler(0f, 0f, angle) * topPosition * rate;
-        } while (Vector3.Distance(position, ball.transform.localPosition) < 1.0f);
+        } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 1.0f));
 
         coin.Initialize(this, position);
     }
