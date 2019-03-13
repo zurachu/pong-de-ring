@@ -8,6 +8,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Transform topVertexTransform;
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Wall wallPrefab;
+    [SerializeField] Coin coinPrefab;
     [SerializeField] int numVertexes;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
@@ -17,6 +18,8 @@ public class InGame : MonoBehaviour
     List<Vertex> vertexes;
     Vertex selectedVertex;
     Wall wall;
+
+    int gotCoinCount;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +34,9 @@ public class InGame : MonoBehaviour
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
         }
+
+        gotCoinCount = 0;
+        CreateNewCoin();
     }
 
     // Update is called once per frame
@@ -58,7 +64,19 @@ public class InGame : MonoBehaviour
 
     public void OnBallHitWall()
     {
-        scoreDisplay.Score = scoreDisplay.Score + 1;
+        AddScore(1);
+    }
+
+    public void OnGetCoin()
+    {
+        gotCoinCount++;
+        AddScore(gotCoinCount * 100);
+        CreateNewCoin();
+    }
+
+    void AddScore(int score)
+    {
+        scoreDisplay.Score = scoreDisplay.Score + score;
     }
 
     public void OnVertexClicked(Vertex vertex)
@@ -103,5 +121,21 @@ public class InGame : MonoBehaviour
                 vertex.ResetColor();
             }
         }
+    }
+
+    void CreateNewCoin()
+    {
+        var coin = Instantiate(coinPrefab);
+
+        Vector3 position;
+        var topPosition = topVertexTransform.localPosition;
+        do
+        {
+            var rate = Random.Range(0f, 0.9f);
+            var angle = Random.Range(0f, 360f);
+            position = Quaternion.Euler(0f, 0f, angle) * topPosition * rate;
+        } while (Vector3.Distance(position, ball.transform.localPosition) < 1.0f);
+
+        coin.Initialize(this, position);
     }
 }

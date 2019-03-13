@@ -568,6 +568,8 @@ MonoBehaviour:
     type: 3}
   wallPrefab: {fileID: 7178106298625755247, guid: 115ed18bc56224fbf91652d61af44cf7,
     type: 3}
+  coinPrefab: {fileID: 6153297744271413984, guid: c555bbb3814164e2e8dd09a629da9118,
+    type: 3}
   numVertexes: 8
   scoreDisplay: {fileID: 447567985}
   keyAssignments:
