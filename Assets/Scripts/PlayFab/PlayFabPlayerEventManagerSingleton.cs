@@ -36,9 +36,12 @@ public class PlayFabPlayerEventManagerSingleton
         var request = response.Request as WriteClientPlayerEventRequest;
         var stringBuilder = new StringBuilder();
         stringBuilder.AppendFormat(string.Format("{0}:{1}\n", request.EventName, response.EventId));
-        foreach (var item in request.Body)
+        if (request.Body != null)
         {
-            stringBuilder.AppendFormat(string.Format("{0}:{1}\n", item.Key, item.Value));
+            foreach (var item in request.Body)
+            {
+                stringBuilder.AppendFormat(string.Format("{0}:{1}\n", item.Key, item.Value));
+            }
         }
         Debug.Log(stringBuilder);
     }

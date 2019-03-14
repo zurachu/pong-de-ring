@@ -9,13 +9,54 @@ public class LeaderboardRequester : MonoBehaviour
 {
     public static readonly int MaxEntriesCount = 10;
 
-    public void Request(string statisticName, Action<List<PlayerLeaderboardEntry>> onReceiveLeaderboard)
+    static readonly string StatisticName = "score";
+
+    public void UpdatePlayerStatistic(int value, Action onSuccess)
+    {
+        var request = new UpdatePlayerStatisticsRequest
+        {
+            Statistics = new List<StatisticUpdate>() {
+                new StatisticUpdate {
+                    StatisticName = StatisticName,
+                    Value = value
+                }
+            }
+        };
+        PlayFabClientAPI.UpdatePlayerStatistics(
+            request,
+            _result => {
+                DebugLogUpdateStatistics(_result);
+
+                onSuccess?.Invoke();
+            },
+            _error => {
+                var report = _error.GenerateErrorReport();
+                Debug.LogError(report);
+
+                ErrorDialogView.Show("UpdatePlayerStatistics failed", report, () => {
+                    UpdatePlayerStatistic(value, onSuccess);
+                }, true);
+            });
+    }
+
+    void DebugLogUpdateStatistics(UpdatePlayerStatisticsResult result)
+    {
+        var request = result.Request as UpdatePlayerStatisticsRequest;
+        var stringBuilder = new StringBuilder();
+        foreach (var statistic in request.Statistics)
+        {
+            stringBuilder.AppendFormat(string.Format("{0}:{1}:{2}", statistic.StatisticName, statistic.Version, statistic.Value));
+        }
+        Debug.Log(stringBuilder);
+    }
+
+    public void Request(Action<List<PlayerLeaderboardEntry>> onReceiveLeaderboard)
     {
         var connectingView = ConnectingView.Show();
 
         var request = new GetLeaderboardRequest {
             MaxResultsCount = MaxEntriesCount,
-            StatisticName = statisticName,
+            StatisticName = StatisticName,
         };
         PlayFabClientAPI.GetLeaderboard(
             request,
@@ -23,10 +64,7 @@ public class LeaderboardRequester : MonoBehaviour
                 DebugLogLeaderboard(_result);
 
                 connectingView.Close();
-                if (onReceiveLeaderboard != null)
-                {
-                    onReceiveLeaderboard(_result.Leaderboard);
-                }
+                onReceiveLeaderboard?.Invoke(_result.Leaderboard);
             },
             _error => {
                 var report = _error.GenerateErrorReport();
@@ -34,7 +72,7 @@ public class LeaderboardRequester : MonoBehaviour
 
                 connectingView.Close();
                 ErrorDialogView.Show("GetLeaderboard failed", report, () => {
-                    Request(statisticName, onReceiveLeaderboard);
+                    Request(onReceiveLeaderboard);
                 }, true);
             });
     }

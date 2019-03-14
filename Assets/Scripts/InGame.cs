@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class InGame : MonoBehaviour
 {
+    public System.Action OnGameOver;
+    public int Score => scoreDisplay.Score;
+
     [SerializeField] Transform topVertexTransform;
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Ball ballPrefab;
@@ -59,6 +62,8 @@ public class InGame : MonoBehaviour
 
     public void StartGame()
     {
+        scoreDisplay.Score = 0;
+
         balls = new List<Ball>();
         AddNewBall();
         balls[0].StartMove();
@@ -84,6 +89,11 @@ public class InGame : MonoBehaviour
     {
         balls.Remove(ball);
         Destroy(ball.gameObject);
+
+        if (balls.Count <= 0)
+        {
+            OnGameOver?.Invoke();
+        }
     }
 
     void AddScore(int score)
