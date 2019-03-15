@@ -23,7 +23,6 @@ public class ErrorDialogView : MonoBehaviour
     [SerializeField] Text messageText;
     [SerializeField] Button retryButton;
     [SerializeField] Button cancelButton;
-    [SerializeField] Button closeButton;
 
     public void Initialize(string title, string message, Action onClickRetry, bool cancelable = false)
     {
@@ -37,7 +36,6 @@ public class ErrorDialogView : MonoBehaviour
         if (cancelable)
         {
             cancelButton.onClick.AddListener(Close);
-            closeButton.onClick.AddListener(Close);
         }
         else
         {
@@ -45,7 +43,6 @@ public class ErrorDialogView : MonoBehaviour
             retryButtonPosition.x = 0f;
             retryButton.transform.localPosition = retryButtonPosition;
             cancelButton.gameObject.SetActive(false);
-            closeButton.gameObject.SetActive(false);
         }
     }
 

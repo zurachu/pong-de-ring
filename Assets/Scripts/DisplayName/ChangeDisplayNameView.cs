@@ -12,7 +12,6 @@ public class ChangeDisplayNameView : MonoBehaviour
     [SerializeField] InputField displayNameInputField;
     [SerializeField] Button okButton;
     [SerializeField] Button cancelButton;
-    [SerializeField] Button closeButton;
     [SerializeField] ConnectingView connectingViewPrefab;
 
     Action<string> onChangeDisplayName;
@@ -32,7 +31,6 @@ public class ChangeDisplayNameView : MonoBehaviour
             okButton.transform.localPosition = okButtonPosition;
             okButton.interactable = false;
             cancelButton.gameObject.SetActive(false);
-            closeButton.gameObject.SetActive(false);
         }
     }
 

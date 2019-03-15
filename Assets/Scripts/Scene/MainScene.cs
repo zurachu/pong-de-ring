@@ -5,7 +5,7 @@ using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InGameScene : MonoBehaviour
+public class MainScene : MonoBehaviour
 {
     [SerializeField] InGame inGame;
     [SerializeField] LeaderboardRequester leaderboardRequester;
@@ -26,7 +26,7 @@ public class InGameScene : MonoBehaviour
 
     void OnLoginSuccess()
     {
-        inGame.StartGame();
+        ShowTitle();
 
         PlayFabPlayerEventManagerSingleton.Instance.Write(PlayFabPlayerEventManagerSingleton.GameStartEventName);
     }
@@ -38,6 +38,24 @@ public class InGameScene : MonoBehaviour
         });
     }
 
+    void ShowTitle()
+    {
+        TitleView view = null;
+        view = TitleView.Show(
+            () => {
+                inGame.StartGame();
+                Destroy(view.gameObject);
+            },
+            () => {
+                ResultView resultView = null;
+                resultView = ResultView.Show(() => {
+                    ShowTitle();
+                    Destroy(resultView.gameObject);
+                });
+                Destroy(view.gameObject);
+            });
+    }
+
     void OnGameOver()
     {
         PlayFabPlayerEventManagerSingleton.Instance.Write(PlayFabPlayerEventManagerSingleton.GameOverEventName);
@@ -46,9 +64,15 @@ public class InGameScene : MonoBehaviour
             StartCoroutine("WaitAndResult");
         });
     }
+
     IEnumerator WaitAndResult()
     {
         yield return new WaitForSeconds(1f);
-//        SceneManager.LoadScene("ResultScene");
+
+        ResultView view = null;
+        view = ResultView.Show(inGame.Score, () => {
+            ShowTitle();
+            Destroy(view.gameObject);
+        });
     }
 }
