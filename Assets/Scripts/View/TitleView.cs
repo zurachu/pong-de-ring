@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class TitleView : MonoBehaviour
 {
-    public static TitleView Show(Action onClickStart, Action onClickResult)
+    public static TitleView Show(Transform parent, Action onClickStart, Action onClickResult)
     {
-        var view = Create();
+        var view = Create(parent);
         view.Initialize(onClickStart, onClickResult);
         return view;
     }
 
-    static TitleView Create()
+    static TitleView Create(Transform parent)
     {
-        return Instantiate(Prefab).GetComponent<TitleView>();
+        return Instantiate(Prefab, parent).GetComponent<TitleView>();
     }
 
     static GameObject Prefab

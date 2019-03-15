@@ -9,6 +9,7 @@ public class MainScene : MonoBehaviour
 {
     [SerializeField] InGame inGame;
     [SerializeField] LeaderboardRequester leaderboardRequester;
+    [SerializeField] Transform uiParent;
 
     // Start is called before the first frame update
     void Start()
@@ -41,14 +42,14 @@ public class MainScene : MonoBehaviour
     void ShowTitle()
     {
         TitleView view = null;
-        view = TitleView.Show(
+        view = TitleView.Show(uiParent,
             () => {
                 inGame.StartGame();
                 Destroy(view.gameObject);
             },
             () => {
                 ResultView resultView = null;
-                resultView = ResultView.Show(() => {
+                resultView = ResultView.Show(uiParent, () => {
                     ShowTitle();
                     Destroy(resultView.gameObject);
                 });
@@ -70,7 +71,7 @@ public class MainScene : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         ResultView view = null;
-        view = ResultView.Show(inGame.Score, () => {
+        view = ResultView.Show(uiParent, inGame.Score, () => {
             ShowTitle();
             Destroy(view.gameObject);
         });

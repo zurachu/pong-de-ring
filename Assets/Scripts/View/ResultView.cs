@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class ResultView : MonoBehaviour
 {
-    public static ResultView Show(int score, Action onClickReturn)
+    public static ResultView Show(Transform parent, int score, Action onClickReturn)
     {
-        var view = Create();
+        var view = Create(parent);
         view.Initialize(score, true, onClickReturn);
         return view;
     }
 
-    public static ResultView Show(Action onClickReturn)
+    public static ResultView Show(Transform parent, Action onClickReturn)
     {
-        var view = Create();
+        var view = Create(parent);
         view.Initialize(0, false, onClickReturn);
         return view;
     }
 
-    static ResultView Create()
+    static ResultView Create(Transform parent)
     {
-        return Instantiate(Prefab).GetComponent<ResultView>();
+        return Instantiate(Prefab, parent).GetComponent<ResultView>();
     }
 
     static GameObject Prefab
@@ -126,5 +126,13 @@ public class ResultView : MonoBehaviour
     public void OnClickReturn()
     {
         onClickReturn?.Invoke();
+    }
+
+    public void OnClickReturnIfGameNotStarted()
+    {
+        if (!gameEnded)
+        {
+            OnClickReturn();
+        }
     }
 }
