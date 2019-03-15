@@ -36,3 +36,4 @@ sysinfo.txt
 *.unitypackage
 Assets/PlayFabEditorExtensions
 PlayFabEditorExtensions.meta
+WebGL
