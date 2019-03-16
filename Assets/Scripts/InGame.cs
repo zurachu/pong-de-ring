@@ -15,6 +15,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Coin coinPrefab;
     [SerializeField] int numVertexes;
     [SerializeField] ScoreDisplay scoreDisplay;
+    [SerializeField] StartCountdownDisplay startCountdownDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
 
@@ -39,8 +40,6 @@ public class InGame : MonoBehaviour
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
         }
-
-        gotCoinCount = 0;
     }
 
     // Update is called once per frame
@@ -62,10 +61,14 @@ public class InGame : MonoBehaviour
     public void StartGame()
     {
         scoreDisplay.Score = 0;
+        gotCoinCount = 0;
 
         balls = new List<Ball>();
         AddNewBall();
-        balls[0].StartMove();
+
+        startCountdownDisplay.StartCountdown(() => {
+            balls[0].StartMove();
+        });
     }
 
     public void OnBallHitWall()
