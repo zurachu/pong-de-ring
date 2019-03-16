@@ -212,7 +212,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startForce: 0.2
-  boundCountToFixedSpeed: 30
+  maxVerocity: 3
+  physicsMaterialSpeedUpOnBound: {fileID: 6200000, guid: 637acabc02ed84136a2ba4eda098b31f,
+    type: 2}
   physicsMaterialFixedSpeed: {fileID: 6200000, guid: fc8b85d96c10c4ddfbdadcc7fe35477d,
     type: 2}
   boundEffect: {fileID: 2299783287667458267}

@@ -6,7 +6,8 @@ using DG.Tweening;
 public class Ball : MonoBehaviour
 {
     [SerializeField] float startForce;
-    [SerializeField] int boundCountToFixedSpeed;
+    [SerializeField] float maxVerocity;
+    [SerializeField] PhysicsMaterial2D physicsMaterialSpeedUpOnBound;
     [SerializeField] PhysicsMaterial2D physicsMaterialFixedSpeed;
     [SerializeField] SpriteRenderer boundEffect;
 
@@ -21,7 +22,15 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var rigidBody = GetComponent<Rigidbody2D>();
+        if (rigidBody.velocity.magnitude >= maxVerocity)
+        {
+            rigidBody.sharedMaterial = physicsMaterialFixedSpeed;
+        }
+        else
+        {
+            rigidBody.sharedMaterial = physicsMaterialSpeedUpOnBound;
+        }
     }
 
     public void StartMove()
@@ -34,10 +43,6 @@ public class Ball : MonoBehaviour
     public void Bound()
     {
         BoundCount++;
-        if (BoundCount >= boundCountToFixedSpeed)
-        {
-            GetComponent<Rigidbody2D>().sharedMaterial = physicsMaterialFixedSpeed;
-        }
 
         var seq = DOTween.Sequence();
         seq.Append(boundEffect.transform.DOScale(Vector3.one, 0f));
