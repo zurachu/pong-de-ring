@@ -36,6 +36,7 @@ public class ResultView : MonoBehaviour
     [SerializeField] LeaderboardRequester leaderboardRequester;
     [SerializeField] LeaderboardView leaderboardView;
     [SerializeField] GameObject tweetButton;
+    [SerializeField] GameObject returnButton;
 
     int score;
     bool gameEnded;
@@ -61,9 +62,7 @@ public class ResultView : MonoBehaviour
 
         leaderboardView.gameObject.SetActive(false);
         tweetButton.SetActive(false);
-#if UNITY_WEBGL
-        tweetButton.SetActive(gameEnded);
-#endif
+        returnButton.SetActive(false);
 
         StartCoroutine("GetLeaderboard", 0f);
     }
@@ -91,6 +90,10 @@ public class ResultView : MonoBehaviour
 
         leaderboardView.Initialize(leaderboardEntries);
         leaderboardView.gameObject.SetActive(true);
+#if UNITY_WEBGL
+        tweetButton.SetActive(gameEnded);
+#endif
+        returnButton.SetActive(true);
     }
 
     bool LeaderboardIsNotUpdatedYet(List<PlayerLeaderboardEntry> leaderboardEntries)
