@@ -44,8 +44,7 @@ public class Wall : MonoBehaviour
         var ball = collision.gameObject.GetComponent<Ball>();
         if (ball != null)
         {
-            parent.OnBallHitWall();
-            ball.Bound();
+            parent.OnBallHitWall(ball);
             CreateBoundEffect();
         }
     }

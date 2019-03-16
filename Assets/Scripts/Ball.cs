@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
     [SerializeField] PhysicsMaterial2D physicsMaterialFixedSpeed;
     [SerializeField] SpriteRenderer boundEffect;
 
-    int boundCount;
+    public int BoundCount { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +33,8 @@ public class Ball : MonoBehaviour
 
     public void Bound()
     {
-        boundCount++;
-        if (boundCount >= boundCountToFixedSpeed)
+        BoundCount++;
+        if (BoundCount >= boundCountToFixedSpeed)
         {
             GetComponent<Rigidbody2D>().sharedMaterial = physicsMaterialFixedSpeed;
         }

@@ -1110,6 +1110,8 @@ MonoBehaviour:
     type: 3}
   coinPrefab: {fileID: 6153297744271413984, guid: c555bbb3814164e2e8dd09a629da9118,
     type: 3}
+  oneUpPrefab: {fileID: 6867266941686921014, guid: 61e298fb7147b48809a3e06134924dfd,
+    type: 3}
   numVertexes: 8
   scoreDisplay: {fileID: 447567985}
   startCountdownDisplay: {fileID: 450508568}

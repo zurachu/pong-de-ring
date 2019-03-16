@@ -16,6 +16,8 @@ public class InGame : MonoBehaviour
         public static readonly string Cancel = "Audios/button14";
         public static readonly string Wall = "Audios/button32";
         public static readonly string Bound = "Audios/button69";
+        public static readonly string Coin = "Audios/button70";
+        public static readonly string OneUp = "Audios/button25";
         public static readonly string Out = "Audios/button24";
     }
 
@@ -24,6 +26,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Ball ballPrefab;
     [SerializeField] Wall wallPrefab;
     [SerializeField] Coin coinPrefab;
+    [SerializeField] OneUp oneUpPrefab;
     [SerializeField] int numVertexes;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] StartCountdownDisplay startCountdownDisplay;
@@ -36,6 +39,7 @@ public class InGame : MonoBehaviour
     List<Ball> balls;
     Wall wall;
     Coin coin;
+    OneUp oneUp;
 
     int gotCoinCount;
 
@@ -43,6 +47,8 @@ public class InGame : MonoBehaviour
     AudioClip cancelAudio;
     AudioClip wallAudio;
     AudioClip boundAudio;
+    AudioClip coinAudio;
+    AudioClip oneUpAudio;
     AudioClip outAudio;
 
     // Start is called before the first frame update
@@ -64,6 +70,8 @@ public class InGame : MonoBehaviour
         cancelAudio = Resources.Load<AudioClip>(Audio.Cancel);
         wallAudio = Resources.Load<AudioClip>(Audio.Wall);
         boundAudio = Resources.Load<AudioClip>(Audio.Bound);
+        coinAudio = Resources.Load<AudioClip>(Audio.Coin);
+        oneUpAudio = Resources.Load<AudioClip>(Audio.OneUp);
         outAudio = Resources.Load<AudioClip>(Audio.Out);
     }
 
@@ -95,6 +103,11 @@ public class InGame : MonoBehaviour
             Destroy(coin.gameObject);
             coin = null;
         }
+        if (oneUp != null)
+        {
+            Destroy(oneUp.gameObject);
+            oneUp = null;
+        }
 
         startCountdownDisplay.StartCountdown(() => {
             balls[0].StartMove();
@@ -104,21 +117,36 @@ public class InGame : MonoBehaviour
         });
     }
 
-    public void OnBallHitWall()
+    public void OnBallHitWall(Ball ball)
     {
         audioSource.PlayOneShot(boundAudio);
-        AddScore(balls.Count);
+        AddScore(1);
+        ball.Bound();
+
         if (coin == null)
         {
             CreateNewCoin();
+        }
+
+        if (ball.BoundCount == 15 && oneUp == null)
+        {
+            CreateNewOneUp();
         }
     }
 
     public void OnGetCoin()
     {
+        audioSource.PlayOneShot(coinAudio);
         gotCoinCount++;
-        AddScore(gotCoinCount * 100);
+        AddScore(gotCoinCount * 10);
         coin = null;
+    }
+
+    public void OnGetOneUp()
+    {
+        audioSource.PlayOneShot(oneUpAudio);
+        AddNewBall().StartMove();
+        oneUp = null;
     }
 
     public void OnBallOutOfBounds(Ball ball)
@@ -141,7 +169,7 @@ public class InGame : MonoBehaviour
 
     void AddScore(int score)
     {
-        scoreDisplay.Score = scoreDisplay.Score + score;
+        scoreDisplay.Score = scoreDisplay.Score + score * balls.Count;
     }
 
     public void OnVertexClicked(Vertex vertex)
@@ -206,7 +234,22 @@ public class InGame : MonoBehaviour
         }
 
         coin = Instantiate(coinPrefab);
+        coin.Initialize(this, NewItemsPosition());
+    }
 
+    void CreateNewOneUp()
+    {
+        if (oneUp != null)
+        {
+            return;
+        }
+
+        oneUp = Instantiate(oneUpPrefab);
+        oneUp.Initialize(this, NewItemsPosition());
+    }
+
+    Vector3 NewItemsPosition()
+    {
         Vector3 position;
         var topPosition = topVertexTransform.localPosition;
         do
@@ -216,6 +259,6 @@ public class InGame : MonoBehaviour
             position = Quaternion.Euler(0f, 0f, angle) * topPosition * rate;
         } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 2f));
 
-        coin.Initialize(this, position);
+        return position;
     }
 }
