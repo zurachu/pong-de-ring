@@ -120,7 +120,7 @@ public class ResultView : MonoBehaviour
             return;
         }
 
-        var message = string.Format("PONG de RING あなたのスコアは{0}点でした", score);
+        var message = string.Format("PONG DE RING あなたのスコアは{0}点でした", score);
 #if UNITY_WEBGL
         naichilab.UnityRoomTweet.Tweet("pong-de-ring", message, "unityroom", "unity1week");
 #endif
