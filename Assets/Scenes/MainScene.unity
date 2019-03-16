@@ -1113,6 +1113,7 @@ MonoBehaviour:
   oneUpPrefab: {fileID: 6867266941686921014, guid: 61e298fb7147b48809a3e06134924dfd,
     type: 3}
   numVertexes: 8
+  boundCountToOneUpBonus: 15
   scoreDisplay: {fileID: 447567985}
   startCountdownDisplay: {fileID: 450508568}
   keyAssignments:

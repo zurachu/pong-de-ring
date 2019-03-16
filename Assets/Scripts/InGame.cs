@@ -28,6 +28,7 @@ public class InGame : MonoBehaviour
     [SerializeField] Coin coinPrefab;
     [SerializeField] OneUp oneUpPrefab;
     [SerializeField] int numVertexes;
+    [SerializeField] int boundCountToOneUpBonus;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] StartCountdownDisplay startCountdownDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
@@ -140,7 +141,7 @@ public class InGame : MonoBehaviour
             CreateNewCoin();
         }
 
-        if (ball.BoundCount == 15 && oneUp == null)
+        if (ball.BoundCount % boundCountToOneUpBonus == 0 && oneUp == null)
         {
             CreateNewOneUp();
         }
