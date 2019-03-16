@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Wall : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer boundEffectPrefab;
+
     InGame parent;
 
     // Start is called before the first frame update
@@ -39,6 +42,26 @@ public class Wall : MonoBehaviour
         {
             parent.OnBallHitWall();
             ball.Bound();
+            CreateBoundEffect();
         }
+    }
+
+    void CreateBoundEffect()
+    {
+        var boundEffect = Instantiate(boundEffectPrefab).GetComponent<SpriteRenderer>();
+        boundEffect.transform.localPosition = transform.localPosition;
+        boundEffect.transform.localRotation = transform.localRotation;
+        boundEffect.transform.localScale = transform.localScale;
+        boundEffect.color = GetComponent<SpriteRenderer>().color;
+
+        var seq = DOTween.Sequence();
+        seq.Append(boundEffect.DOFade(0.5f, 0f));
+        seq.Append(boundEffect.transform.DOScaleY(8f, 1f));
+        seq.Join(boundEffect.DOFade(0f, 1f));
+        seq.onComplete = () =>
+        {
+            Destroy(boundEffect.gameObject);
+        };
+        seq.Play();
     }
 }

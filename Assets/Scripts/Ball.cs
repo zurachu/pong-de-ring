@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Ball : MonoBehaviour
 {
     [SerializeField] float startForce;
     [SerializeField] int boundCountToFixedSpeed;
     [SerializeField] PhysicsMaterial2D physicsMaterialFixedSpeed;
+    [SerializeField] SpriteRenderer boundEffect;
 
     int boundCount;
 
@@ -36,5 +38,12 @@ public class Ball : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().sharedMaterial = physicsMaterialFixedSpeed;
         }
+
+        var seq = DOTween.Sequence();
+        seq.Append(boundEffect.transform.DOScale(Vector3.one, 0f));
+        seq.Join(boundEffect.DOFade(0.5f, 0f));
+        seq.Append(boundEffect.transform.DOScale(Vector3.one * 4, 1f));
+        seq.Join(boundEffect.DOFade(0f, 1f));
+        seq.Play();
     }
 }

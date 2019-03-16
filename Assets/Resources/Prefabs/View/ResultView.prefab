@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4988074657326238012}
   - component: {fileID: 5168912475494856824}
   - component: {fileID: 5168910415087725054}
+  - component: {fileID: 4599670721240779301}
   m_Layer: 5
   m_Name: Button Return
   m_TagString: Untagged
@@ -128,6 +129,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &4599670721240779301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5055541060639712962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 989267a65e6ef4760a2fd34ad6f7a8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5055628705026596790
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +267,7 @@ MonoBehaviour:
   leaderboardRequester: {fileID: 7492287144334301392}
   leaderboardView: {fileID: 3629618332171211295}
   tweetButton: {fileID: 5803647924603364371}
+  returnButton: {fileID: 5055541060639712962}
 --- !u!114 &7492287144334301392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,8 +395,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -60, y: -10}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -60, y: -5}
+  m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &4988283525831723374
 CanvasRenderer:
@@ -405,7 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -532,7 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -626,7 +640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -723,6 +737,7 @@ GameObject:
   - component: {fileID: 6668441893210347078}
   - component: {fileID: 8234745109665210494}
   - component: {fileID: 5844621486506476463}
+  - component: {fileID: 2947313420173784202}
   m_Layer: 5
   m_Name: Button Tweet
   m_TagString: Untagged
@@ -839,6 +854,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2947313420173784202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803647924603364371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 989267a65e6ef4760a2fd34ad6f7a8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &24049506084448678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -948,12 +975,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98965f0f64b824a648f03552c3b64d54, type: 3}
---- !u!4 &4549020053584665079 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4572329304270385233, guid: 98965f0f64b824a648f03552c3b64d54,
-    type: 3}
-  m_PrefabInstance: {fileID: 24049506084448678}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6264608672276638815 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6243445389317277177, guid: 98965f0f64b824a648f03552c3b64d54,
@@ -966,6 +987,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3ee1f1dbbaa486facd3ce3b522703b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4549020053584665079 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4572329304270385233, guid: 98965f0f64b824a648f03552c3b64d54,
+    type: 3}
+  m_PrefabInstance: {fileID: 24049506084448678}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1050606935186027831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1202,12 +1229,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98965f0f64b824a648f03552c3b64d54, type: 3}
---- !u!4 &2050643352849837729 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4572329304270385233, guid: 98965f0f64b824a648f03552c3b64d54,
-    type: 3}
-  m_PrefabInstance: {fileID: 2522424832579362544}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8476997730265914121 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6243445389317277177, guid: 98965f0f64b824a648f03552c3b64d54,
@@ -1220,6 +1241,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3ee1f1dbbaa486facd3ce3b522703b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2050643352849837729 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4572329304270385233, guid: 98965f0f64b824a648f03552c3b64d54,
+    type: 3}
+  m_PrefabInstance: {fileID: 2522424832579362544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2829753187972894500
 PrefabInstance:
   m_ObjectHideFlags: 0
