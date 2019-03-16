@@ -187,6 +187,11 @@ public class InGame : MonoBehaviour
 
     public void OnVertexClicked(Vertex vertex)
     {
+        if (balls == null || balls.Count <= 0)
+        {
+            return;
+        }
+
         if (selectedVertex == vertex)
         {
             audioSource.PlayOneShot(cancelAudio);
