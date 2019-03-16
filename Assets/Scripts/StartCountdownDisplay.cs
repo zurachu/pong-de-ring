@@ -43,8 +43,8 @@ public class StartCountdownDisplay : MonoBehaviour
         var rectTransform = text.GetComponent<RectTransform>();
         seq.Append(rectTransform.DOScale(Vector3.one, 0f));
         seq.Join(text.DOFade(1f, 0f));
-        seq.Append(rectTransform.DOScale(Vector3.one * 4, 1f));
-        seq.Join(text.DOFade(0f, 1f));
+        seq.Append(rectTransform.DOScale(Vector3.one * 4, 0.5f));
+        seq.Join(text.DOFade(0f, 0.5f));
         seq.onComplete = onComplete;
         seq.Play();
     }

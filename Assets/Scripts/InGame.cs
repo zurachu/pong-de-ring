@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 public class InGame : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class InGame : MonoBehaviour
     [SerializeField] StartCountdownDisplay startCountdownDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
+    [SerializeField] AudioSource audioSource;
 
     List<Vertex> vertexes;
     Vertex selectedVertex;
@@ -40,6 +42,8 @@ public class InGame : MonoBehaviour
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
         }
+
+        audioSource.clip = Resources.Load<AudioClip>("Audios/beat0203");
     }
 
     // Update is called once per frame
@@ -68,6 +72,9 @@ public class InGame : MonoBehaviour
 
         startCountdownDisplay.StartCountdown(() => {
             balls[0].StartMove();
+
+            audioSource.Play();
+            audioSource.DOFade(1f, 0f);
         });
     }
 
@@ -94,6 +101,7 @@ public class InGame : MonoBehaviour
 
         if (balls.Count <= 0)
         {
+            audioSource.DOFade(0f, 1f);
             OnGameOver?.Invoke();
         }
     }
