@@ -55,7 +55,7 @@ public class Wall : MonoBehaviour
         boundEffect.color = GetComponent<SpriteRenderer>().color;
 
         var seq = DOTween.Sequence();
-        seq.Append(boundEffect.DOFade(0.5f, 0f));
+        seq.Append(boundEffect.DOFade(1f, 0f));
         seq.Append(boundEffect.transform.DOScaleY(8f, 1f));
         seq.Join(boundEffect.DOFade(0f, 1f));
         seq.onComplete = () =>

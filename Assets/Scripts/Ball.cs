@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour
 
         var seq = DOTween.Sequence();
         seq.Append(boundEffect.transform.DOScale(Vector3.one, 0f));
-        seq.Join(boundEffect.DOFade(0.5f, 0f));
+        seq.Join(boundEffect.DOFade(1f, 0f));
         seq.Append(boundEffect.transform.DOScale(Vector3.one * 4, 1f));
         seq.Join(boundEffect.DOFade(0f, 1f));
         seq.Play();
