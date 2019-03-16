@@ -31,6 +31,10 @@ public class Wall : MonoBehaviour
         var rad = Mathf.Atan2(diff.y, diff.x);
         transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * rad);
 
+        var scale = transform.localScale;
+        scale.x = diff.magnitude + 0.5f;
+        transform.localScale = scale;
+
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = color;
     }
@@ -56,10 +60,9 @@ public class Wall : MonoBehaviour
 
         var seq = DOTween.Sequence();
         seq.Append(boundEffect.DOFade(1f, 0f));
-        seq.Append(boundEffect.transform.DOScaleY(8f, 1f));
+        seq.Append(boundEffect.transform.DOScaleY(boundEffect.transform.localScale.y * 4, 1f));
         seq.Join(boundEffect.DOFade(0f, 1f));
-        seq.onComplete = () =>
-        {
+        seq.onComplete = () => {
             Destroy(boundEffect.gameObject);
         };
         seq.Play();
