@@ -9,6 +9,13 @@ public class InGame : MonoBehaviour
     public System.Action OnGameOver;
     public int Score => scoreDisplay.Score;
 
+    static class Audio
+    {
+        public static readonly string Bgm = "Audios/beat0203";
+        public static readonly string Bound = "Audios/button69";
+        public static readonly string Out = "Audios/button24";
+    }
+
     [SerializeField] Transform topVertexTransform;
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Ball ballPrefab;
@@ -29,6 +36,9 @@ public class InGame : MonoBehaviour
 
     int gotCoinCount;
 
+    AudioClip boundAudio;
+    AudioClip outAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +53,9 @@ public class InGame : MonoBehaviour
             vertexes.Add(vertex);
         }
 
-        audioSource.clip = Resources.Load<AudioClip>("Audios/beat0203");
+        audioSource.clip = Resources.Load<AudioClip>(Audio.Bgm);
+        boundAudio = Resources.Load<AudioClip>(Audio.Bound);
+        outAudio = Resources.Load<AudioClip>(Audio.Out);
     }
 
     // Update is called once per frame
@@ -80,7 +92,8 @@ public class InGame : MonoBehaviour
 
     public void OnBallHitWall()
     {
-        AddScore(1);
+        audioSource.PlayOneShot(boundAudio);
+        AddScore(balls.Count);
         if (coin == null)
         {
             CreateNewCoin();
@@ -96,6 +109,8 @@ public class InGame : MonoBehaviour
 
     public void OnBallOutOfBounds(Ball ball)
     {
+        audioSource.PlayOneShot(outAudio);
+
         balls.Remove(ball);
         Destroy(ball.gameObject);
 
@@ -175,7 +190,7 @@ public class InGame : MonoBehaviour
         var topPosition = topVertexTransform.localPosition;
         do
         {
-            var rate = Random.Range(0f, 0.9f);
+            var rate = Random.Range(0f, 0.8f);
             var angle = Random.Range(0f, 360f);
             position = Quaternion.Euler(0f, 0f, angle) * topPosition * rate;
         } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 1.0f));
