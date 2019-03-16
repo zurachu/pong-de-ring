@@ -81,6 +81,11 @@ public class InGame : MonoBehaviour
 
         balls = new List<Ball>();
         AddNewBall();
+        if (coin != null)
+        {
+            Destroy(coin.gameObject);
+            coin = null;
+        }
 
         startCountdownDisplay.StartCountdown(() => {
             balls[0].StartMove();
@@ -193,7 +198,7 @@ public class InGame : MonoBehaviour
             var rate = Random.Range(0f, 0.8f);
             var angle = Random.Range(0f, 360f);
             position = Quaternion.Euler(0f, 0f, angle) * topPosition * rate;
-        } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 1.0f));
+        } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 2f));
 
         coin.Initialize(this, position);
     }
