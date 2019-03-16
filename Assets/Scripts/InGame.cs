@@ -17,7 +17,6 @@ public class InGame : MonoBehaviour
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
-    [SerializeField] float startForce;
 
     List<Vertex> vertexes;
     Vertex selectedVertex;
