@@ -96,8 +96,20 @@ public class InGame : MonoBehaviour
         scoreDisplay.Score = 0;
         gotCoinCount = 0;
 
+        foreach (var vertex in vertexes)
+        {
+            vertex.ResetColor();
+        }
+        selectedVertex = null;
+
         balls = new List<Ball>();
         AddNewBall();
+
+        if (wall != null)
+        {
+            Destroy(wall.gameObject);
+            wall = null;
+        }
         if (coin != null)
         {
             Destroy(coin.gameObject);
