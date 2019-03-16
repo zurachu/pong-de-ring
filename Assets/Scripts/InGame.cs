@@ -12,6 +12,9 @@ public class InGame : MonoBehaviour
     static class Audio
     {
         public static readonly string Bgm = "Audios/beat0203";
+        public static readonly string Select = "Audios/button17";
+        public static readonly string Cancel = "Audios/button14";
+        public static readonly string Wall = "Audios/button32";
         public static readonly string Bound = "Audios/button69";
         public static readonly string Out = "Audios/button24";
     }
@@ -36,6 +39,9 @@ public class InGame : MonoBehaviour
 
     int gotCoinCount;
 
+    AudioClip selectAudio;
+    AudioClip cancelAudio;
+    AudioClip wallAudio;
     AudioClip boundAudio;
     AudioClip outAudio;
 
@@ -54,6 +60,9 @@ public class InGame : MonoBehaviour
         }
 
         audioSource.clip = Resources.Load<AudioClip>(Audio.Bgm);
+        selectAudio = Resources.Load<AudioClip>(Audio.Select);
+        cancelAudio = Resources.Load<AudioClip>(Audio.Cancel);
+        wallAudio = Resources.Load<AudioClip>(Audio.Wall);
         boundAudio = Resources.Load<AudioClip>(Audio.Bound);
         outAudio = Resources.Load<AudioClip>(Audio.Out);
     }
@@ -121,7 +130,11 @@ public class InGame : MonoBehaviour
 
         if (balls.Count <= 0)
         {
-            audioSource.DOFade(0f, 1f);
+            var seq = DOTween.Sequence();
+            seq.SetDelay(1f);
+            seq.Append(audioSource.DOFade(0f, 1f));
+            seq.Play();
+
             OnGameOver?.Invoke();
         }
     }
@@ -135,17 +148,20 @@ public class InGame : MonoBehaviour
     {
         if (selectedVertex == vertex)
         {
+            audioSource.PlayOneShot(cancelAudio);
             vertex.ResetColor();
             colorIterator.Next();
             selectedVertex = null;
         }
         else if (selectedVertex == null)
         {
+            audioSource.PlayOneShot(selectAudio);
             vertex.SetColor(colorIterator.Current);
             selectedVertex = vertex;
         }
         else
         {
+            audioSource.PlayOneShot(wallAudio);
             CreateNewWall(selectedVertex, vertex);
             colorIterator.Next();
             selectedVertex = null;
