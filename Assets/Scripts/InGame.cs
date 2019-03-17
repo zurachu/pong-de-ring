@@ -32,6 +32,7 @@ public class InGame : MonoBehaviour
     [SerializeField] int boundCountToOneUpBonus;
     [SerializeField] Canvas guideCanvas;
     [SerializeField] ScoreDisplay scoreDisplay;
+    [SerializeField] ScoreUpDisplay scoreUpDisplayPrefab;
     [SerializeField] StartCountdownDisplay startCountdownDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
@@ -140,7 +141,7 @@ public class InGame : MonoBehaviour
     public void OnBallHitWall(Ball ball)
     {
         audioSource.PlayOneShot(boundAudio);
-        AddScore(1);
+        AddScore(1, ball.transform.position);
         ball.Bound();
 
         if (coin == null)
@@ -158,7 +159,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(coinAudio);
         gotCoinCount++;
-        AddScore(gotCoinCount * 10);
+        AddScore(gotCoinCount * 10, coin.transform.position);
         coin = null;
     }
 
@@ -188,9 +189,13 @@ public class InGame : MonoBehaviour
         }
     }
 
-    void AddScore(int score)
+    void AddScore(int score, Vector3 position)
     {
-        scoreDisplay.Score = scoreDisplay.Score + score * balls.Count;
+        var scoreUp = score * balls.Count;
+        scoreDisplay.Score = scoreDisplay.Score + scoreUp;
+
+        var scoreUpDisplay = Instantiate(scoreUpDisplayPrefab, guideCanvas.transform);
+        scoreUpDisplay.Initialize(scoreUp, WorldToGuideCanvasLocalPosition(position));
     }
 
     public void OnVertexClicked(Vertex vertex)
