@@ -1,2 +1,3 @@
-# tsunagaru
-Unity1週間ゲームジャム お題「つながる」
+# pong-de-ring
+
+PONG DE RING
