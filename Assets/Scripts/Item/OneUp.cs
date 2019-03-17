@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OneUp : MonoBehaviour
+public class OneUp : ItemBase
 {
-    InGame parent;
-    bool alive;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -19,23 +16,8 @@ public class OneUp : MonoBehaviour
         
     }
 
-    public void Initialize(InGame parent, Vector3 position)
+    protected override void OnHitBall()
     {
-        this.parent = parent;
-        transform.localPosition = position;
-        this.alive = true;
-    }
-
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.GetComponent<Ball>() != null)
-        {
-            if (alive)
-            {
-                parent.OnGetOneUp();
-                alive = false;
-                Destroy(gameObject); // TODO: GETアニメーションしてから消す
-            }
-        }
+        parent.OnGetOneUp();
     }
 }

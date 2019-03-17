@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : ItemBase
 {
-    InGame parent;
-    bool alive;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -19,23 +16,8 @@ public class Coin : MonoBehaviour
         
     }
 
-    public void Initialize(InGame parent, Vector3 position)
+    protected override void OnHitBall()
     {
-        this.parent = parent;
-        transform.localPosition = position;
-        this.alive = true;
-    }
-
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.GetComponent<Ball>() != null)
-        {
-            if (alive)
-            {
-                parent.OnGetCoin();
-                alive = false;
-                Destroy(gameObject); // TODO: GETアニメーションしてから消す
-            }
-        }
+        parent.OnGetCoin();
     }
 }
