@@ -46,6 +46,7 @@ public class InGame : MonoBehaviour
     OneUp oneUp;
 
     int gotCoinCount;
+    int gotOneUpCount;
 
     AudioClip selectAudio;
     AudioClip cancelAudio;
@@ -104,6 +105,7 @@ public class InGame : MonoBehaviour
     {
         scoreDisplay.Score = 0;
         gotCoinCount = 0;
+        gotOneUpCount = 0;
 
         foreach (var vertex in vertexes)
         {
@@ -131,7 +133,7 @@ public class InGame : MonoBehaviour
         }
 
         startCountdownDisplay.StartCountdown(() => {
-            balls[0].StartMove();
+            balls[0].StartMove(gotOneUpCount);
 
             audioSource.Play();
             audioSource.DOFade(1f, 0f);
@@ -166,7 +168,8 @@ public class InGame : MonoBehaviour
     public void OnGetOneUp()
     {
         audioSource.PlayOneShot(oneUpAudio);
-        AddNewBall().StartMove();
+        gotOneUpCount++;
+        AddNewBall().StartMove(gotOneUpCount);
         oneUp = null;
     }
 

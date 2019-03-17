@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] float startForce;
+    [SerializeField] float startForceBase;
+    [SerializeField] float startForceAdditionalPerNewBall;
     [SerializeField] float maxVerocity;
     [SerializeField] PhysicsMaterial2D physicsMaterialSpeedUpOnBound;
     [SerializeField] PhysicsMaterial2D physicsMaterialFixedSpeed;
@@ -33,9 +34,9 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void StartMove()
+    public void StartMove(int newBallCount)
     {
-        var vec = new Vector2(startForce, 0f);
+        var vec = new Vector2(startForceBase + startForceAdditionalPerNewBall * newBallCount, 0f);
         vec = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)) * vec;
         GetComponent<Rigidbody2D>().AddForce(vec, ForceMode2D.Impulse);
     }
