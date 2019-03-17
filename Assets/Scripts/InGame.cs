@@ -27,8 +27,11 @@ public class InGame : MonoBehaviour
     [SerializeField] Wall wallPrefab;
     [SerializeField] Coin coinPrefab;
     [SerializeField] OneUp oneUpPrefab;
+    [SerializeField] RectTransform topVertexKeyGuideTransform;
+    [SerializeField] InGameKeyAssignmentGuide keyAssignmentGuidePrefab;
     [SerializeField] int numVertexes;
     [SerializeField] int boundCountToOneUpBonus;
+    [SerializeField] Canvas guideCanvas;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] StartCountdownDisplay startCountdownDisplay;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
@@ -57,6 +60,7 @@ public class InGame : MonoBehaviour
     {
         vertexes = new List<Vertex>();
         var topPosition = topVertexTransform.localPosition;
+        var topKeyGuidePosition = topVertexKeyGuideTransform.localPosition;
         for (var i = 0; i < numVertexes; i++)
         {
             var angle = 360f * i / numVertexes;
@@ -64,6 +68,10 @@ public class InGame : MonoBehaviour
             var vertex = Instantiate(vertexPrefab);
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
+
+            position = Quaternion.Euler(0f, 0f, angle) * topKeyGuidePosition;
+            var guide = Instantiate(keyAssignmentGuidePrefab, guideCanvas.transform);
+            guide.Initialize(keyAssignments, i, position);
         }
 
         audioSource.clip = Resources.Load<AudioClip>(Audio.Bgm);
