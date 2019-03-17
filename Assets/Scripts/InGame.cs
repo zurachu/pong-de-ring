@@ -27,7 +27,6 @@ public class InGame : MonoBehaviour
     [SerializeField] Wall wallPrefab;
     [SerializeField] Coin coinPrefab;
     [SerializeField] OneUp oneUpPrefab;
-    [SerializeField] RectTransform topVertexKeyGuideTransform;
     [SerializeField] InGameKeyAssignmentGuide keyAssignmentGuidePrefab;
     [SerializeField] int numVertexes;
     [SerializeField] int boundCountToOneUpBonus;
@@ -61,7 +60,6 @@ public class InGame : MonoBehaviour
     {
         vertexes = new List<Vertex>();
         var topPosition = topVertexTransform.localPosition;
-        var topKeyGuidePosition = topVertexKeyGuideTransform.localPosition;
         for (var i = 0; i < numVertexes; i++)
         {
             var angle = 360f * i / numVertexes;
@@ -70,9 +68,8 @@ public class InGame : MonoBehaviour
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
 
-            position = Quaternion.Euler(0f, 0f, angle) * topKeyGuidePosition;
             var guide = Instantiate(keyAssignmentGuidePrefab, guideCanvas.transform);
-            guide.Initialize(keyAssignments, i, position);
+            guide.Initialize(keyAssignments, i, WorldToGuideCanvasLocalPosition(vertex.transform.position));
         }
 
         audioSource.clip = Resources.Load<AudioClip>(Audio.Bgm);
@@ -289,5 +286,14 @@ public class InGame : MonoBehaviour
         } while (balls.Any(_ball => Vector3.Distance(position, _ball.transform.localPosition) < 2f));
 
         return position;
+    }
+
+    Vector2 WorldToGuideCanvasLocalPosition(Vector3 position)
+    {
+        Vector2 localPosition;
+        var screenPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, position);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            guideCanvas.GetComponent<RectTransform>(), screenPosition, Camera.main, out localPosition);
+        return localPosition;
     }
 }

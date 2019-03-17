@@ -29,7 +29,7 @@ public class InGameKeyAssignmentGuide : MonoBehaviour
         keyImage.DOFade(key.color.a, 0f);
     }
 
-    public void Initialize(List<InGameKeyAssignment> keyAssignments, int index, Vector3 localPosition)
+    public void Initialize(List<InGameKeyAssignment> keyAssignments, int index, Vector2 localPosition)
     {
         transform.localPosition = localPosition;
 

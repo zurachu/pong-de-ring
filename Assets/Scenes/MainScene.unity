@@ -1112,7 +1112,6 @@ MonoBehaviour:
     type: 3}
   oneUpPrefab: {fileID: 6867266941686921014, guid: 61e298fb7147b48809a3e06134924dfd,
     type: 3}
-  topVertexKeyGuideTransform: {fileID: 520303496}
   keyAssignmentGuidePrefab: {fileID: 3625297701392554926, guid: f1c89855bce7e42268ca06ae821735cb,
     type: 3}
   numVertexes: 8
