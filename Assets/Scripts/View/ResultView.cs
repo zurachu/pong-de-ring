@@ -64,15 +64,11 @@ public class ResultView : MonoBehaviour
         tweetButton.SetActive(false);
         returnButton.SetActive(false);
 
-        StartCoroutine("GetLeaderboard", 0f);
+        GetLeaderboard();
     }
 
-    IEnumerator GetLeaderboard(float waitSeconds)
+    void GetLeaderboard()
     {
-        if (waitSeconds > 0f)
-        {
-            yield return new WaitForSeconds(waitSeconds);
-        }
         leaderboardRequester.Request(SetupLeaderboard);
     }
 
@@ -83,7 +79,7 @@ public class ResultView : MonoBehaviour
             if (LeaderboardIsNotUpdatedYet(leaderboardEntries))
             {
                 Debug.Log("Leaderboard does not updated yet.");
-                StartCoroutine("GetLeaderboard", 0.5f);
+                Invoke("GetLeaderboard", 0.5f);
                 return;
             }
         }

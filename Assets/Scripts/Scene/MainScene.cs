@@ -65,17 +65,14 @@ public class MainScene : MonoBehaviour
     {
         PlayFabPlayerEventManagerSingleton.Instance.Write(PlayFabPlayerEventManagerSingleton.GameOverEventName);
         leaderboardRequester.UpdatePlayerStatistic(inGame.Score, () => {
-            
-            StartCoroutine("WaitAndResult");
+            Invoke("StartResult", 2f);
         });
 
         gameOverDisplay.SetActive(true);
     }
 
-    IEnumerator WaitAndResult()
+    void StartResult()
     {
-        yield return new WaitForSeconds(2f);
-
         gameOverDisplay.SetActive(false);
 
         ResultView view = null;
