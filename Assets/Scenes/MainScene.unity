@@ -1115,7 +1115,6 @@ MonoBehaviour:
   keyAssignmentGuidePrefab: {fileID: 3625297701392554926, guid: f1c89855bce7e42268ca06ae821735cb,
     type: 3}
   numVertexes: 8
-  boundCountToOneUpBonus: 15
   guideCanvas: {fileID: 602676996}
   scoreDisplay: {fileID: 447567985}
   scoreUpDisplayPrefab: {fileID: 4573371230636407211, guid: c6dcb2fceb61a42d59aa897ea134de7c,
@@ -1342,7 +1341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078463607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4387428, y: 2.0825922, z: 0.2815133}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -29,7 +29,6 @@ public class InGame : MonoBehaviour
     [SerializeField] OneUp oneUpPrefab;
     [SerializeField] InGameKeyAssignmentGuide keyAssignmentGuidePrefab;
     [SerializeField] int numVertexes;
-    [SerializeField] int boundCountToOneUpBonus;
     [SerializeField] Canvas guideCanvas;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] ScoreUpDisplay scoreUpDisplayPrefab;
@@ -45,6 +44,7 @@ public class InGame : MonoBehaviour
     Coin coin;
     OneUp oneUp;
 
+    TitleConstData titleConstData;
     int gotCoinCount;
     int gotOneUpCount;
 
@@ -99,8 +99,9 @@ public class InGame : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void StartGame(TitleConstData titleConstData)
     {
+        this.titleConstData = titleConstData;
         scoreDisplay.Score = 0;
         gotCoinCount = 0;
         gotOneUpCount = 0;
@@ -131,7 +132,7 @@ public class InGame : MonoBehaviour
         }
 
         startCountdownDisplay.StartCountdown(() => {
-            balls[0].StartMove(gotOneUpCount);
+            balls[0].StartMove(titleConstData.NormalStartForceBase, titleConstData.MaxVelocity);
 
             audioSource.Play();
             audioSource.DOFade(1f, 0f);
@@ -141,7 +142,7 @@ public class InGame : MonoBehaviour
     public void OnBallHitWall(Ball ball)
     {
         audioSource.PlayOneShot(boundAudio);
-        AddScore(1, ball.transform.position);
+        AddScore(titleConstData.BoundScoreBase, ball.transform.position);
         ball.Bound();
 
         if (coin == null)
@@ -149,7 +150,7 @@ public class InGame : MonoBehaviour
             CreateNewCoin();
         }
 
-        if (ball.BoundCount % boundCountToOneUpBonus == 0 && oneUp == null)
+        if (ball.BoundCount % titleConstData.BoundCountToOneUpBonus == 0 && oneUp == null)
         {
             CreateNewOneUp();
         }
@@ -159,7 +160,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(coinAudio);
         gotCoinCount++;
-        AddScore(gotCoinCount * 10, coin.transform.position);
+        AddScore(gotCoinCount * titleConstData.CoinScoreBase, coin.transform.position);
         coin = null;
     }
 
@@ -167,7 +168,8 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(oneUpAudio);
         gotOneUpCount++;
-        AddNewBall().StartMove(gotOneUpCount);
+        var force = titleConstData.NormalStartForceBase + titleConstData.StartForceAdditionalPerNewBall * gotOneUpCount;
+        AddNewBall().StartMove(force, titleConstData.MaxVelocity);
         oneUp = null;
     }
 
