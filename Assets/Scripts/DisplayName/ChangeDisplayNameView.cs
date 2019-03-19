@@ -12,7 +12,6 @@ public class ChangeDisplayNameView : MonoBehaviour
     [SerializeField] InputField displayNameInputField;
     [SerializeField] Button okButton;
     [SerializeField] Button cancelButton;
-    [SerializeField] ConnectingView connectingViewPrefab;
 
     Action<string> onChangeDisplayName;
     ConnectingView connectingView;
