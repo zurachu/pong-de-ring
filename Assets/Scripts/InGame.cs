@@ -132,7 +132,7 @@ public class InGame : MonoBehaviour
         }
 
         startCountdownDisplay.StartCountdown(() => {
-            balls[0].StartMove(titleConstData.NormalStartForceBase, titleConstData.MaxVelocity);
+            balls[0].StartMove(titleConstData.NormalStartForce, titleConstData.MaxVelocity);
 
             audioSource.Play();
             audioSource.DOFade(1f, 0f);
@@ -168,7 +168,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(oneUpAudio);
         gotOneUpCount++;
-        var force = titleConstData.NormalStartForceBase + titleConstData.StartForceAdditionalPerNewBall * gotOneUpCount;
+        var force = titleConstData.NormalStartForceBaseNewBall + titleConstData.NormalStartForceAdditionalPerNewBall * gotOneUpCount;
         AddNewBall().StartMove(force, titleConstData.MaxVelocity);
         oneUp = null;
     }

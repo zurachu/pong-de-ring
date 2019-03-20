@@ -12,10 +12,13 @@ public class TitleConstData
         public static readonly string CoinScoreBase = "CoinScoreBase";
         public static readonly string ExpertInitialScore = "ExpertInitialScore";
         public static readonly string ExpertInitialGotCoinCount = "ExpertInitialGotCoinCount";
-        public static readonly string ExpertStartForceBase = "ExpertStartForceBase";
+        public static readonly string ExpertStartForce = "ExpertStartForce";
+        public static readonly string ExpertStartForceBaseNewBall = "ExpertStartForceBaseNewBall";
+        public static readonly string ExpertStartForceAdditionalPerNewBall = "ExpertStartForceAdditionalPerNewBal";
         public static readonly string MaxVelocity = "MaxVelocity";
-        public static readonly string NormalStartForceBase = "NormalStartForceBase";
-        public static readonly string StartForceAdditionalPerNewBall = "StartForceAdditionalPerNewBall";
+        public static readonly string NormalStartForce = "NormalStartForce";
+        public static readonly string NormalStartForceBaseNewBall = "NormalStartForceBaseNewBall";
+        public static readonly string NormalStartForceAdditionalPerNewBall = "NormalStartForceAdditionalPerNewBall";
     }
 
     public int BoundCountToOneUpBonus { get; private set; }
@@ -23,10 +26,13 @@ public class TitleConstData
     public int CoinScoreBase { get; private set; }
     public int ExpertInitialScore { get; private set; }
     public int ExpertInitialGotCoinCount { get; private set; }
-    public float ExpertStartForceBase { get; private set; }
+    public float ExpertStartForce { get; private set; }
+    public float ExpertStartForceBaseNewBall { get; private set; }
+    public float ExpertStartForceAdditionalPerNewBall { get; private set; }
     public float MaxVelocity { get; private set; }
-    public float NormalStartForceBase { get; private set; }
-    public float StartForceAdditionalPerNewBall { get; private set; }
+    public float NormalStartForce { get; private set; }
+    public float NormalStartForceBaseNewBall { get; private set; }
+    public float NormalStartForceAdditionalPerNewBall { get; private set; }
 
     public TitleConstData(Dictionary<string, string> source)
     {
@@ -35,10 +41,13 @@ public class TitleConstData
         CoinScoreBase = GetValue<int>(source, ValueKey.CoinScoreBase);
         ExpertInitialScore = GetValue<int>(source, ValueKey.ExpertInitialScore);
         ExpertInitialGotCoinCount = GetValue<int>(source, ValueKey.ExpertInitialGotCoinCount);
-        ExpertStartForceBase = GetValue<float>(source, ValueKey.ExpertStartForceBase);
+        ExpertStartForce = GetValue<float>(source, ValueKey.ExpertStartForce);
+        ExpertStartForceBaseNewBall = GetValue<float>(source, ValueKey.ExpertStartForceBaseNewBall);
+        ExpertStartForceAdditionalPerNewBall = GetValue<float>(source, ValueKey.ExpertStartForceAdditionalPerNewBall);
         MaxVelocity = GetValue<float>(source, ValueKey.MaxVelocity);
-        NormalStartForceBase = GetValue<float>(source, ValueKey.NormalStartForceBase);
-        StartForceAdditionalPerNewBall = GetValue<float>(source, ValueKey.StartForceAdditionalPerNewBall);
+        NormalStartForce = GetValue<float>(source, ValueKey.NormalStartForce);
+        NormalStartForceBaseNewBall = GetValue<float>(source, ValueKey.NormalStartForceBaseNewBall);
+        NormalStartForceAdditionalPerNewBall = GetValue<float>(source, ValueKey.NormalStartForceAdditionalPerNewBall);
     }
 
     T GetValue<T>(Dictionary<string, string> source, string key)
