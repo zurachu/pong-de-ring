@@ -9,6 +9,12 @@ public class InGame : MonoBehaviour
     public System.Action OnGameOver;
     public int Score => scoreDisplay.Score;
 
+    public enum Level
+    {
+        Normal,
+        Expert,
+    }
+
     static class Audio
     {
         public static readonly string Bgm = "Audios/beat0203";
@@ -44,6 +50,7 @@ public class InGame : MonoBehaviour
     Coin coin;
     OneUp oneUp;
 
+    Level level;
     TitleConstData titleConstData;
     int gotCoinCount;
     int gotOneUpCount;
@@ -99,12 +106,18 @@ public class InGame : MonoBehaviour
         }
     }
 
-    public void StartGame(TitleConstData titleConstData)
+    public void StartGame(Level level, TitleConstData titleConstData)
     {
+        this.level = level;
         this.titleConstData = titleConstData;
         scoreDisplay.Score = 0;
         gotCoinCount = 0;
         gotOneUpCount = 0;
+        if (level == Level.Expert)
+        {
+            scoreDisplay.Score = titleConstData.ExpertInitialScore;
+            gotCoinCount = titleConstData.ExpertInitialGotCoinCount;
+        }
 
         foreach (var vertex in vertexes)
         {
@@ -132,7 +145,7 @@ public class InGame : MonoBehaviour
         }
 
         startCountdownDisplay.StartCountdown(() => {
-            balls[0].StartMove(titleConstData.NormalStartForce, titleConstData.MaxVelocity);
+            balls[0].StartMove(FirstBallStartForce(), titleConstData.MaxVelocity);
 
             audioSource.Play();
             audioSource.DOFade(1f, 0f);
@@ -168,8 +181,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(oneUpAudio);
         gotOneUpCount++;
-        var force = titleConstData.NormalStartForceBaseNewBall + titleConstData.NormalStartForceAdditionalPerNewBall * gotOneUpCount;
-        AddNewBall().StartMove(force, titleConstData.MaxVelocity);
+        AddNewBall().StartMove(AdditionalBallStartForce(), titleConstData.MaxVelocity);
         oneUp = null;
     }
 
@@ -234,6 +246,26 @@ public class InGame : MonoBehaviour
         var ball = Instantiate(ballPrefab);
         balls.Add(ball);
         return ball;
+    }
+
+    float FirstBallStartForce()
+    {
+        var force = titleConstData.NormalStartForce;
+        if (level == Level.Expert)
+        {
+            force = titleConstData.ExpertStartForce;
+        }
+        return force;
+    }
+
+    float AdditionalBallStartForce()
+    {
+        var force = titleConstData.NormalStartForceBaseNewBall + titleConstData.NormalStartForceAdditionalPerNewBall * gotOneUpCount;
+        if (level == Level.Expert)
+        {
+            force = titleConstData.ExpertStartForceBaseNewBall + titleConstData.ExpertStartForceAdditionalPerNewBall * gotOneUpCount;
+        }
+        return force;
     }
 
     void CreateNewWall(Vertex v1, Vertex v2)

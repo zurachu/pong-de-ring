@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TitleView : MonoBehaviour
 {
-    public static TitleView Show(Transform parent, Action onClickStart, Action onClickResult)
+    public static TitleView Show(Transform parent, Action<InGame.Level> onClickStart, Action onClickResult)
     {
         var view = Create(parent);
         view.Initialize(onClickStart, onClickResult);
@@ -25,7 +25,7 @@ public class TitleView : MonoBehaviour
         }
     }
 
-    Action onClickStart;
+    Action<InGame.Level> onClickStart;
     Action onClickResult;
 
     // Start is called before the first frame update
@@ -40,7 +40,7 @@ public class TitleView : MonoBehaviour
         
     }
 
-    private void Initialize(Action onClickStart, Action onClickResult)
+    private void Initialize(Action<InGame.Level> onClickStart, Action onClickResult)
     {
         this.onClickStart = onClickStart;
         this.onClickResult = onClickResult;
@@ -48,7 +48,7 @@ public class TitleView : MonoBehaviour
 
     public void OnClickStart()
     {
-        onClickStart?.Invoke();
+        onClickStart?.Invoke(InGame.Level.Normal);
     }
 
     public void OnClickResult()

@@ -48,9 +48,9 @@ public class MainScene : MonoBehaviour
     {
         TitleView view = null;
         view = TitleView.Show(uiParent,
-            () => {
+            (_level) => {
                 GetTitleData((_data) => {
-                inGame.StartGame(new TitleConstData(_data));
+                inGame.StartGame(_level, new TitleConstData(_data));
                     gameOverDisplay.SetActive(false);
                     Destroy(view.gameObject);
                 });
