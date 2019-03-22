@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -47,9 +49,11 @@ public class MainScene : MonoBehaviour
     {
         TitleView view = null;
         view = TitleView.Show(uiParent,
-            () => {
-                inGame.StartGame();
-                Destroy(view.gameObject);
+            (_level) => {
+                GetTitleData((_data) => {
+                inGame.StartGame(_level, new TitleConstData(_data));
+                    Destroy(view.gameObject);
+                });
             },
             () => {
                 ResultView resultView = null;
@@ -59,6 +63,42 @@ public class MainScene : MonoBehaviour
                 });
                 Destroy(view.gameObject);
             });
+    }
+
+    void GetTitleData(Action<Dictionary<string, string>> onSuccess)
+    {
+        var connectingView = ConnectingView.Show();
+
+        PlayFabClientAPI.GetTitleData(
+            new GetTitleDataRequest(),
+            _result => {
+                DebugLogTitleData(_result);
+
+                connectingView.Close();
+                onSuccess?.Invoke(_result.Data);
+            },
+            _error => {
+                var report = _error.GenerateErrorReport();
+                Debug.LogError(report);
+
+                connectingView.Close();
+                ErrorDialogView.Show("GetTitleData failed", report, () => {
+                GetTitleData(onSuccess);
+                }, true);
+            });
+    }
+
+    void DebugLogTitleData(GetTitleDataResult result)
+    {
+        if (result.Data != null)
+        {
+            var stringBuilder = new StringBuilder();
+            foreach (var item in result.Data)
+            {
+                stringBuilder.AppendFormat(string.Format("{0}:{1}\n", item.Key, item.Value));
+            }
+            Debug.Log(stringBuilder);
+        }
     }
 
     void OnGameOver()

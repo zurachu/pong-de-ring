@@ -5,14 +5,13 @@ using DG.Tweening;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] float startForceBase;
-    [SerializeField] float startForceAdditionalPerNewBall;
-    [SerializeField] float maxVerocity;
     [SerializeField] PhysicsMaterial2D physicsMaterialSpeedUpOnBound;
     [SerializeField] PhysicsMaterial2D physicsMaterialFixedSpeed;
     [SerializeField] SpriteRenderer boundEffect;
 
     public int BoundCount { get; private set; }
+
+    float maxVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +23,7 @@ public class Ball : MonoBehaviour
     void Update()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
-        if (rigidBody.velocity.magnitude >= maxVerocity)
+        if (rigidBody.velocity.magnitude >= maxVelocity)
         {
             rigidBody.sharedMaterial = physicsMaterialFixedSpeed;
         }
@@ -34,16 +33,19 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void StartMove(int newBallCount)
+    public void StartMove(float force, float maxVelocity)
     {
-        var vec = new Vector2(startForceBase + startForceAdditionalPerNewBall * newBallCount, 0f);
-        vec = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)) * vec;
+        this.maxVelocity = maxVelocity;
+
+        var vec = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)) * new Vector2(force, 0f);
         GetComponent<Rigidbody2D>().AddForce(vec, ForceMode2D.Impulse);
     }
 
     public void Bound()
     {
         BoundCount++;
+
+        Debug.Log(GetComponent<Rigidbody2D>().velocity.magnitude);
 
         var seq = DOTween.Sequence();
         seq.Append(boundEffect.transform.DOScale(Vector3.one, 0f));

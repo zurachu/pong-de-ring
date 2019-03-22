@@ -9,6 +9,12 @@ public class InGame : MonoBehaviour
     public System.Action OnGameOver;
     public int Score => scoreDisplay.Score;
 
+    public enum Level
+    {
+        Normal,
+        Expert,
+    }
+
     static class Audio
     {
         public static readonly string Bgm = "Audios/beat0203";
@@ -29,7 +35,6 @@ public class InGame : MonoBehaviour
     [SerializeField] OneUp oneUpPrefab;
     [SerializeField] InGameKeyAssignmentGuide keyAssignmentGuidePrefab;
     [SerializeField] int numVertexes;
-    [SerializeField] int boundCountToOneUpBonus;
     [SerializeField] Canvas guideCanvas;
     [SerializeField] ScoreDisplay scoreDisplay;
     [SerializeField] ScoreUpView scoreUpViewPrefab;
@@ -45,6 +50,8 @@ public class InGame : MonoBehaviour
     Coin coin;
     OneUp oneUp;
 
+    Level level;
+    TitleConstData titleConstData;
     int gotCoinCount;
     int gotOneUpCount;
 
@@ -99,11 +106,18 @@ public class InGame : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void StartGame(Level level, TitleConstData titleConstData)
     {
+        this.level = level;
+        this.titleConstData = titleConstData;
         scoreDisplay.Score = 0;
         gotCoinCount = 0;
         gotOneUpCount = 0;
+        if (level == Level.Expert)
+        {
+            scoreDisplay.Score = titleConstData.ExpertInitialScore;
+            gotCoinCount = titleConstData.ExpertInitialGotCoinCount;
+        }
 
         foreach (var vertex in vertexes)
         {
@@ -132,7 +146,7 @@ public class InGame : MonoBehaviour
 
         var startCountdownView = Instantiate(startCountdownViewPrefab, guideCanvas.transform);
         startCountdownView.Initialize(() => {
-            balls[0].StartMove(gotOneUpCount);
+            balls[0].StartMove(FirstBallStartForce(), titleConstData.MaxVelocity);
 
             audioSource.Play();
             audioSource.DOFade(1f, 0f);
@@ -142,7 +156,7 @@ public class InGame : MonoBehaviour
     public void OnBallHitWall(Ball ball)
     {
         audioSource.PlayOneShot(boundAudio);
-        AddScore(1, ball.transform.position);
+        AddScore(titleConstData.BoundScoreBase, ball.transform.position);
         ball.Bound();
 
         if (coin == null)
@@ -150,7 +164,7 @@ public class InGame : MonoBehaviour
             CreateNewCoin();
         }
 
-        if (ball.BoundCount % boundCountToOneUpBonus == 0 && oneUp == null)
+        if (ball.BoundCount % titleConstData.BoundCountToOneUpBonus == 0 && oneUp == null)
         {
             CreateNewOneUp();
         }
@@ -160,7 +174,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(coinAudio);
         gotCoinCount++;
-        AddScore(gotCoinCount * 10, coin.transform.position);
+        AddScore(gotCoinCount * titleConstData.CoinScoreBase, coin.transform.position);
         coin = null;
     }
 
@@ -168,7 +182,7 @@ public class InGame : MonoBehaviour
     {
         audioSource.PlayOneShot(oneUpAudio);
         gotOneUpCount++;
-        AddNewBall().StartMove(gotOneUpCount);
+        AddNewBall().StartMove(AdditionalBallStartForce(), titleConstData.MaxVelocity);
         oneUp = null;
     }
 
@@ -233,6 +247,26 @@ public class InGame : MonoBehaviour
         var ball = Instantiate(ballPrefab);
         balls.Add(ball);
         return ball;
+    }
+
+    float FirstBallStartForce()
+    {
+        var force = titleConstData.NormalStartForce;
+        if (level == Level.Expert)
+        {
+            force = titleConstData.ExpertStartForce;
+        }
+        return force;
+    }
+
+    float AdditionalBallStartForce()
+    {
+        var force = titleConstData.NormalStartForceBaseNewBall + titleConstData.NormalStartForceAdditionalPerNewBall * gotOneUpCount;
+        if (level == Level.Expert)
+        {
+            force = titleConstData.ExpertStartForceBaseNewBall + titleConstData.ExpertStartForceAdditionalPerNewBall * gotOneUpCount;
+        }
+        return force;
     }
 
     void CreateNewWall(Vertex v1, Vertex v2)
