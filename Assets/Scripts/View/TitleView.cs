@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TitleView : MonoBehaviour
 {
+    [SerializeField] GameObject clickToStart;
+    [SerializeField] GameObject selectLevel;
+
     public static TitleView Show(Transform parent, Action<InGame.Level> onClickStart, Action onClickResult)
     {
         var view = Create(parent);
@@ -31,7 +34,8 @@ public class TitleView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        clickToStart.SetActive(true);
+        selectLevel.SetActive(false);        
     }
 
     // Update is called once per frame
@@ -48,7 +52,23 @@ public class TitleView : MonoBehaviour
 
     public void OnClickStart()
     {
-        onClickStart?.Invoke(InGame.Level.Normal);
+        clickToStart.SetActive(false);
+        selectLevel.SetActive(true);
+    }
+
+    public void OnClickNormal()
+    {
+        OnClickLevel(InGame.Level.Normal);
+    }
+
+    public void OnClickExpert()
+    {
+        OnClickLevel(InGame.Level.Expert);
+    }
+
+    void OnClickLevel(InGame.Level level)
+    {
+        onClickStart?.Invoke(level);
     }
 
     public void OnClickResult()
