@@ -37,8 +37,8 @@ public class InGame : MonoBehaviour
     [SerializeField] int numVertexes;
     [SerializeField] Canvas guideCanvas;
     [SerializeField] ScoreDisplay scoreDisplay;
-    [SerializeField] ScoreUpDisplay scoreUpDisplayPrefab;
-    [SerializeField] StartCountdownDisplay startCountdownDisplay;
+    [SerializeField] ScoreUpView scoreUpViewPrefab;
+    [SerializeField] StartCountdownView startCountdownViewPrefab;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
     [SerializeField] AudioSource audioSource;
@@ -97,7 +97,7 @@ public class InGame : MonoBehaviour
         {
             foreach (var keyAssignment in keyAssignments)
             {
-                if (Input.GetKeyUp(keyAssignment.Code(i)))
+                if (keyAssignment.GetKeyUp(i))
                 {
                     OnVertexClicked(vertexes[i]);
                     break;
@@ -144,7 +144,8 @@ public class InGame : MonoBehaviour
             oneUp = null;
         }
 
-        startCountdownDisplay.StartCountdown(() => {
+        var startCountdownView = Instantiate(startCountdownViewPrefab, guideCanvas.transform);
+        startCountdownView.Initialize(() => {
             balls[0].StartMove(FirstBallStartForce(), titleConstData.MaxVelocity);
 
             audioSource.Play();
@@ -208,8 +209,8 @@ public class InGame : MonoBehaviour
         var scoreUp = score * balls.Count;
         scoreDisplay.Score = scoreDisplay.Score + scoreUp;
 
-        var scoreUpDisplay = Instantiate(scoreUpDisplayPrefab, guideCanvas.transform);
-        scoreUpDisplay.Initialize(scoreUp, WorldToGuideCanvasLocalPosition(position));
+        var scoreUpView = Instantiate(scoreUpViewPrefab, guideCanvas.transform);
+        scoreUpView.Initialize(scoreUp, WorldToGuideCanvasLocalPosition(position));
     }
 
     public void OnVertexClicked(Vertex vertex)

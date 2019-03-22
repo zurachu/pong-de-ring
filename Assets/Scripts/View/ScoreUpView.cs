@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class ScoreUpDisplay : MonoBehaviour
+public class ScoreUpView : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI score;
 

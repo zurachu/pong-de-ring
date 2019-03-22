@@ -32,7 +32,7 @@ public class Wall : MonoBehaviour
         transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * rad);
 
         var scale = transform.localScale;
-        scale.x = diff.magnitude + 0.5f;
+        scale.x = diff.magnitude + 0.75f;
         transform.localScale = scale;
 
         var spriteRenderer = GetComponent<SpriteRenderer>();

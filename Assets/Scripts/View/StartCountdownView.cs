@@ -5,14 +5,13 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class StartCountdownDisplay : MonoBehaviour
+public class StartCountdownView : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
 
     // Start is called before the first frame update
     void Start()
     {
-        text.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -21,15 +20,14 @@ public class StartCountdownDisplay : MonoBehaviour
         
     }
 
-    public void StartCountdown(Action onComplete)
+    public void Initialize(Action onComplete)
     {
-        text.gameObject.SetActive(true);
-
         Countdown(3, () => {
             Countdown(2, () => {
                 Countdown(1, () => {
-                    text.gameObject.SetActive(false);
                     onComplete?.Invoke();
+
+                    Destroy(gameObject);
                 });
             });
         });
