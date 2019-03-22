@@ -15,18 +15,6 @@ public class InGame : MonoBehaviour
         Expert,
     }
 
-    static class Audio
-    {
-        public static readonly string Bgm = "Audios/beat0203";
-        public static readonly string Select = "Audios/button17";
-        public static readonly string Cancel = "Audios/button14";
-        public static readonly string Wall = "Audios/button32";
-        public static readonly string Bound = "Audios/button69";
-        public static readonly string Coin = "Audios/button70";
-        public static readonly string OneUp = "Audios/button25";
-        public static readonly string Out = "Audios/button24";
-    }
-
     [SerializeField] Transform topVertexTransform;
     [SerializeField] Vertex vertexPrefab;
     [SerializeField] Ball ballPrefab;
@@ -41,7 +29,6 @@ public class InGame : MonoBehaviour
     [SerializeField] StartCountdownView startCountdownViewPrefab;
     [SerializeField] List<InGameKeyAssignment> keyAssignments;
     [SerializeField] ColorIterator colorIterator;
-    [SerializeField] AudioSource audioSource;
 
     List<Vertex> vertexes;
     Vertex selectedVertex;
@@ -54,14 +41,6 @@ public class InGame : MonoBehaviour
     TitleConstData titleConstData;
     int gotCoinCount;
     int gotOneUpCount;
-
-    AudioClip selectAudio;
-    AudioClip cancelAudio;
-    AudioClip wallAudio;
-    AudioClip boundAudio;
-    AudioClip coinAudio;
-    AudioClip oneUpAudio;
-    AudioClip outAudio;
 
     // Start is called before the first frame update
     void Start()
@@ -79,15 +58,6 @@ public class InGame : MonoBehaviour
             var guide = Instantiate(keyAssignmentGuidePrefab, guideCanvas.transform);
             guide.Initialize(keyAssignments, i, WorldToGuideCanvasLocalPosition(vertex.transform.position));
         }
-
-        audioSource.clip = Resources.Load<AudioClip>(Audio.Bgm);
-        selectAudio = Resources.Load<AudioClip>(Audio.Select);
-        cancelAudio = Resources.Load<AudioClip>(Audio.Cancel);
-        wallAudio = Resources.Load<AudioClip>(Audio.Wall);
-        boundAudio = Resources.Load<AudioClip>(Audio.Bound);
-        coinAudio = Resources.Load<AudioClip>(Audio.Coin);
-        oneUpAudio = Resources.Load<AudioClip>(Audio.OneUp);
-        outAudio = Resources.Load<AudioClip>(Audio.Out);
     }
 
     // Update is called once per frame
@@ -148,14 +118,13 @@ public class InGame : MonoBehaviour
         startCountdownView.Initialize(() => {
             balls[0].StartMove(FirstBallStartForce(), titleConstData.MaxVelocity);
 
-            audioSource.Play();
-            audioSource.DOFade(1f, 0f);
+            AudioManagerSingleton.Instance.PlayBgm();
         });
     }
 
     public void OnBallHitWall(Ball ball)
     {
-        audioSource.PlayOneShot(boundAudio);
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Bound);
         AddScore(titleConstData.BoundScoreBase, ball.transform.position);
         ball.Bound();
 
@@ -172,7 +141,7 @@ public class InGame : MonoBehaviour
 
     public void OnGetCoin()
     {
-        audioSource.PlayOneShot(coinAudio);
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Coin);
         gotCoinCount++;
         AddScore(gotCoinCount * titleConstData.CoinScoreBase, coin.transform.position);
         coin = null;
@@ -180,7 +149,7 @@ public class InGame : MonoBehaviour
 
     public void OnGetOneUp()
     {
-        audioSource.PlayOneShot(oneUpAudio);
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.OneUp);
         gotOneUpCount++;
         AddNewBall().StartMove(AdditionalBallStartForce(), titleConstData.MaxVelocity);
         oneUp = null;
@@ -188,17 +157,14 @@ public class InGame : MonoBehaviour
 
     public void OnBallOutOfBounds(Ball ball)
     {
-        audioSource.PlayOneShot(outAudio);
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Out);
 
         balls.Remove(ball);
         Destroy(ball.gameObject);
 
         if (balls.Count <= 0)
         {
-            var seq = DOTween.Sequence();
-            seq.SetDelay(1f);
-            seq.Append(audioSource.DOFade(0f, 1f));
-            seq.Play();
+            AudioManagerSingleton.Instance.FadeOutBgm();
 
             OnGameOver?.Invoke();
         }
@@ -222,20 +188,20 @@ public class InGame : MonoBehaviour
 
         if (selectedVertex == vertex)
         {
-            audioSource.PlayOneShot(cancelAudio);
+            AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Cancel);
             vertex.ResetColor();
             colorIterator.Next();
             selectedVertex = null;
         }
         else if (selectedVertex == null)
         {
-            audioSource.PlayOneShot(selectAudio);
+            AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Select);
             vertex.SetColor(colorIterator.Current);
             selectedVertex = vertex;
         }
         else
         {
-            audioSource.PlayOneShot(wallAudio);
+            AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Wall);
             CreateNewWall(selectedVertex, vertex);
             colorIterator.Next();
             selectedVertex = null;

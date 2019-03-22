@@ -52,6 +52,8 @@ public class TitleView : MonoBehaviour
 
     public void OnClickStart()
     {
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Select);
+
         clickToStart.SetActive(false);
         selectLevel.SetActive(true);
     }
@@ -68,11 +70,15 @@ public class TitleView : MonoBehaviour
 
     void OnClickLevel(InGame.Level level)
     {
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.OneUp);
+
         onClickStart?.Invoke(level);
     }
 
     public void OnClickResult()
     {
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Coin);
+
         onClickResult?.Invoke();
     }
 }

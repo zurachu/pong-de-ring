@@ -116,6 +116,8 @@ public class ResultView : MonoBehaviour
             return;
         }
 
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.OneUp);
+
         var message = string.Format("PONG DE RING あなたのスコアは{0}点でした", score);
 #if UNITY_WEBGL
         naichilab.UnityRoomTweet.Tweet("pong-de-ring", message, "unityroom", "unity1week");
@@ -124,6 +126,8 @@ public class ResultView : MonoBehaviour
 
     public void OnClickReturn()
     {
+        AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.Cancel);
+
         onClickReturn?.Invoke();
     }
 
