@@ -90,7 +90,7 @@ public class InGame : MonoBehaviour
         {
             foreach (var keyAssignment in keyAssignments)
             {
-                if (Input.GetKeyUp(keyAssignment.Code(i)))
+                if (keyAssignment.GetKeyUp(i))
                 {
                     OnVertexClicked(vertexes[i]);
                     break;
