@@ -10,14 +10,15 @@ public class MainScene : MonoBehaviour
     [SerializeField] InGame inGame;
     [SerializeField] LeaderboardRequester leaderboardRequester;
     [SerializeField] Transform uiParent;
-    [SerializeField] GameObject gameOverDisplay;
+    [SerializeField] GameObject gameOverViewPrefab;
 
+
+    GameObject gameOverView;
 
     // Start is called before the first frame update
     void Start()
     {
         inGame.OnGameOver = OnGameOver;
-        gameOverDisplay.SetActive(false);
 
         PlayFabLoginManagerSingleton.Instance.TryLogin(OnLoginSuccess, OnLoginFailure);
     }
@@ -48,7 +49,6 @@ public class MainScene : MonoBehaviour
         view = TitleView.Show(uiParent,
             () => {
                 inGame.StartGame();
-                gameOverDisplay.SetActive(false);
                 Destroy(view.gameObject);
             },
             () => {
@@ -68,12 +68,12 @@ public class MainScene : MonoBehaviour
             Invoke("StartResult", 2f);
         });
 
-        gameOverDisplay.SetActive(true);
+        gameOverView = Instantiate(gameOverViewPrefab, uiParent);
     }
 
     void StartResult()
     {
-        gameOverDisplay.SetActive(false);
+        Destroy(gameOverView);
 
         ResultView view = null;
         view = ResultView.Show(uiParent, inGame.Score, () => {
