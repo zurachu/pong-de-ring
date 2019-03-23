@@ -86,9 +86,7 @@ public class ResultView : MonoBehaviour
 
         leaderboardView.Initialize(leaderboardEntries);
         leaderboardView.gameObject.SetActive(true);
-#if UNITY_WEBGL
         tweetButton.SetActive(gameEnded);
-#endif
         returnButton.SetActive(true);
     }
 
@@ -121,6 +119,9 @@ public class ResultView : MonoBehaviour
         var message = string.Format("PONG DE RING あなたのスコアは{0}点でした", score);
 #if UNITY_WEBGL
         naichilab.UnityRoomTweet.Tweet("pong-de-ring", message, "unityroom", "unity1week");
+#else
+        message += "\nandroid: https://play.google.com/store/apps/details?id=com.zurachu.PongDeRing\nPC: https://unityroom.com/games/pong-de-ring #unityroom #unity1week";    
+        Application.OpenURL("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(message));
 #endif
     }
 
