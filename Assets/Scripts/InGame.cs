@@ -176,7 +176,7 @@ public class InGame : MonoBehaviour
         scoreDisplay.Score = scoreDisplay.Score + scoreUp;
 
         var scoreUpView = Instantiate(scoreUpViewPrefab, guideCanvas.transform);
-        scoreUpView.Initialize(scoreUp, WorldToGuideCanvasLocalPosition(position));
+        scoreUpView.Initialize(score, balls.Count, WorldToGuideCanvasLocalPosition(position));
     }
 
     public void OnVertexClicked(Vertex vertex)
