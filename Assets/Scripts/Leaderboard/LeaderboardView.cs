@@ -1,44 +1,59 @@
 ﻿using System.Collections.Generic;
 using PlayFab.ClientModels;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderboardView : MonoBehaviour
 {
-    [SerializeField] List<LeaderboardEntryView> entryViews;
+    [SerializeField] ScrollRect scrollRect;
+    [SerializeField] LeaderboardEntryView entryViewPrefab;
     [SerializeField] DisplayNameRequester displayNameRequester;
     [SerializeField] ChangeDisplayNameView changeDisplayNameViewPrefab;
 
     List<PlayerLeaderboardEntry> leaderboardEntries;
+    List<LeaderboardEntryView> leaderboardEntryViews;
 
     public void Initialize(List<PlayerLeaderboardEntry> entries)
     {
         leaderboardEntries = entries;
+        leaderboardEntryViews = new List<LeaderboardEntryView>();
 
-        var index = 0;
-        foreach (var view in entryViews)
+        var entryViewHeight = entryViewPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        var position = new Vector3();
+        foreach (var entry in leaderboardEntries)
         {
-            if (index < leaderboardEntries.Count)
-            {
-                view.gameObject.SetActive(true);
-                view.Initialize(leaderboardEntries[index]);
-            }
-            else
-            {
-                view.gameObject.SetActive(false);
-            }
-            index++;
+            var entryView = Instantiate(entryViewPrefab, scrollRect.content);
+            entryView.Initialize(entry);
+            entryView.transform.localPosition = position;
+            leaderboardEntryViews.Add(entryView);
+
+            position.y -= entryViewHeight;
         }
+        var contentRectTransform = scrollRect.content.GetComponent<RectTransform>();
+        var contentSize = contentRectTransform.sizeDelta;
+        contentSize.y = -position.y;
+        contentRectTransform.sizeDelta = contentSize;
 
-        var myEntry = FindMyEntry(leaderboardEntries);
-        if (myEntry != null && string.IsNullOrEmpty(myEntry.DisplayName))
+        var myEntryIndex = FindMyEntryIndex();
+        if (myEntryIndex >= 0)
         {
-            ShowChangeDisplayNameView(null);
+            var y = scrollRect.GetComponent<RectTransform>().sizeDelta.y - entryViewHeight * (myEntryIndex + 1);
+            scrollRect.verticalNormalizedPosition = 1f + ((float)y / contentSize.y);
+            if (scrollRect.verticalNormalizedPosition > 1f)
+            {
+                scrollRect.verticalNormalizedPosition = 1f;
+            }
+
+            if (string.IsNullOrEmpty(leaderboardEntries[myEntryIndex].DisplayName))
+            {
+                ShowChangeDisplayNameView(null);
+            }
         }
     }
 
-    PlayerLeaderboardEntry FindMyEntry(List<PlayerLeaderboardEntry> entries)
+    int FindMyEntryIndex()
     {
-        return entries.Find(_entry => _entry.PlayFabId == PlayFabLoginManagerSingleton.Instance.PlayFabId);
+        return leaderboardEntries.FindIndex(_entry => _entry.PlayFabId == PlayFabLoginManagerSingleton.Instance.PlayFabId);
     }
 
     public void OnClickChangeDisplayName()
@@ -50,11 +65,11 @@ public class LeaderboardView : MonoBehaviour
     {
         var view = Instantiate(changeDisplayNameViewPrefab);
         view.Initialize(currentName, _newName => {
-            var myEntry = FindMyEntry(leaderboardEntries);
-            if (myEntry != null)
+            var myEntryIndex = FindMyEntryIndex();
+            if (myEntryIndex >= 0)
             {
-                myEntry.DisplayName = _newName;
-                Initialize(leaderboardEntries);
+                leaderboardEntries[myEntryIndex].DisplayName = _newName;
+                leaderboardEntryViews[myEntryIndex].Initialize(leaderboardEntries[myEntryIndex]);
             }
         });
     }

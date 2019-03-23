@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class LeaderboardRequester : MonoBehaviour
 {
-    public static readonly int MaxEntriesCount = 10;
+    public static readonly int MaxEntriesCount = 30;
 
     static readonly string StatisticName = "score";
 
