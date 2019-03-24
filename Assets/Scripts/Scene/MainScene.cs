@@ -14,7 +14,7 @@ public class MainScene : MonoBehaviour
     [SerializeField] Transform uiParent;
     [SerializeField] GameObject gameOverViewPrefab;
 
-
+    Dictionary<string, string> titleData;
     GameObject gameOverView;
 
     // Start is called before the first frame update
@@ -51,7 +51,8 @@ public class MainScene : MonoBehaviour
         view = TitleView.Show(uiParent,
             (_level) => {
                 GetTitleData((_data) => {
-                inGame.StartGame(_level, new TitleConstData(_data));
+                    titleData = _data;
+                    inGame.StartGame(_level, new TitleConstData(titleData));
                     Destroy(view.gameObject);
                 });
             },
@@ -95,7 +96,7 @@ public class MainScene : MonoBehaviour
             var stringBuilder = new StringBuilder();
             foreach (var item in result.Data)
             {
-                stringBuilder.AppendFormat(string.Format("{0}:{1}\n", item.Key, item.Value));
+                stringBuilder.AppendFormat("{0}:{1}\n", item.Key, item.Value);
             }
             Debug.Log(stringBuilder);
         }
@@ -116,7 +117,7 @@ public class MainScene : MonoBehaviour
         Destroy(gameOverView);
 
         ResultView view = null;
-        view = ResultView.Show(uiParent, inGame.Score, () => {
+        view = ResultView.Show(uiParent, new TitleConstData(titleData), inGame.Score, () => {
             ShowTitle();
             Destroy(view.gameObject);
         });

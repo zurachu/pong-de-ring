@@ -19,6 +19,8 @@ public class TitleConstData
         public static readonly string NormalStartForce = "NormalStartForce";
         public static readonly string NormalStartForceBaseNewBall = "NormalStartForceBaseNewBall";
         public static readonly string NormalStartForceAdditionalPerNewBall = "NormalStartForceAdditionalPerNewBall";
+        public static readonly string TweetMessage = "TweetMessage";
+        public static readonly string TweetScoreFormat = "TweetScoreFormat";
     }
 
     public int BoundCountToOneUpBonus { get; private set; }
@@ -33,9 +35,16 @@ public class TitleConstData
     public float NormalStartForce { get; private set; }
     public float NormalStartForceBaseNewBall { get; private set; }
     public float NormalStartForceAdditionalPerNewBall { get; private set; }
+    public string TweetMessage { get; private set; }
+    public string TweetScoreFormat { get; private set; }
 
     public TitleConstData(Dictionary<string, string> source)
     {
+        if (source == null)
+        {
+            return;
+        }
+
         BoundCountToOneUpBonus = GetValue<int>(source, ValueKey.BoundCountToOneUpBonus);
         BoundScoreBase = GetValue<int>(source, ValueKey.BoundScoreBase);
         CoinScoreBase = GetValue<int>(source, ValueKey.CoinScoreBase);
@@ -48,6 +57,17 @@ public class TitleConstData
         NormalStartForce = GetValue<float>(source, ValueKey.NormalStartForce);
         NormalStartForceBaseNewBall = GetValue<float>(source, ValueKey.NormalStartForceBaseNewBall);
         NormalStartForceAdditionalPerNewBall = GetValue<float>(source, ValueKey.NormalStartForceAdditionalPerNewBall);
+        TweetMessage = GetString(source, ValueKey.TweetMessage);
+        TweetScoreFormat = GetString(source, ValueKey.TweetScoreFormat);
+    }
+
+    string GetString(Dictionary<string, string> source, string key)
+    {
+        if (source.TryGetValue(key, out var value))
+        {
+            return value.Replace("<br>", "\n");
+        }
+        return string.Empty;
     }
 
     T GetValue<T>(Dictionary<string, string> source, string key)
