@@ -3,20 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using PlayFab.ClientModels;
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 public class ResultView : MonoBehaviour
 {
-    public static ResultView Show(Transform parent, int score, Action onClickReturn)
+    public static ResultView Show(Transform parent, TitleConstData titleConstData, int score, Action onClickReturn)
     {
         var view = Create(parent);
-        view.Initialize(score, true, onClickReturn);
+        view.Initialize(titleConstData, score, true, onClickReturn);
         return view;
     }
 
     public static ResultView Show(Transform parent, Action onClickReturn)
     {
         var view = Create(parent);
-        view.Initialize(0, false, onClickReturn);
+        view.Initialize(null, 0, false, onClickReturn);
         return view;
     }
 
@@ -38,6 +39,8 @@ public class ResultView : MonoBehaviour
     [SerializeField] GameObject tweetButton;
     [SerializeField] GameObject returnButton;
 
+    string tweetScoreFormat;
+    string tweetMessage;
     int score;
     bool gameEnded;
     Action onClickReturn;
@@ -54,8 +57,13 @@ public class ResultView : MonoBehaviour
         
     }
 
-    void Initialize(int score, bool gameEnded, Action onClickReturn)
+    void Initialize(TitleConstData titleConstData, int score, bool gameEnded, Action onClickReturn)
     {
+        if (titleConstData != null)
+        {
+            this.tweetScoreFormat = titleConstData.TweetScoreFormat;
+            this.tweetMessage = titleConstData.TweetMessage;
+        }
         this.score = score;
         this.gameEnded = gameEnded;
         this.onClickReturn = onClickReturn;
@@ -65,6 +73,12 @@ public class ResultView : MonoBehaviour
         returnButton.SetActive(false);
 
         GetLeaderboard();
+
+        if (gameEnded && Advertisement.IsReady())
+        {
+            var options = new ShowOptions();
+            Advertisement.Show(options);
+        }
     }
 
     void GetLeaderboard()
@@ -86,9 +100,7 @@ public class ResultView : MonoBehaviour
 
         leaderboardView.Initialize(leaderboardEntries);
         leaderboardView.gameObject.SetActive(true);
-#if UNITY_WEBGL
         tweetButton.SetActive(gameEnded);
-#endif
         returnButton.SetActive(true);
     }
 
@@ -118,9 +130,13 @@ public class ResultView : MonoBehaviour
 
         AudioManagerSingleton.Instance.PlaySe(AudioManagerSingleton.Audio.OneUp);
 
-        var message = string.Format("PONG DE RING あなたのスコアは{0}点でした", score);
+        var message = string.Format(tweetScoreFormat, score);
 #if UNITY_WEBGL
         naichilab.UnityRoomTweet.Tweet("pong-de-ring", message, "unityroom", "unity1week");
+#else
+        message += "\n";
+        message += tweetMessage;
+        Application.OpenURL("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(message));
 #endif
     }
 

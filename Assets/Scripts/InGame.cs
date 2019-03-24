@@ -55,14 +55,20 @@ public class InGame : MonoBehaviour
             vertex.Initialize(this, position);
             vertexes.Add(vertex);
 
+
             var guide = Instantiate(keyAssignmentGuidePrefab, guideCanvas.transform);
+#if UNITY_WEBGL
             guide.Initialize(keyAssignments, i, WorldToGuideCanvasLocalPosition(vertex.transform.position));
+#else
+            guide.Initialize(null, i, WorldToGuideCanvasLocalPosition(vertex.transform.position));
+#endif
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+#if UNITY_WEBGL
         for (var i = 0; i < numVertexes; i++)
         {
             foreach (var keyAssignment in keyAssignments)
@@ -74,6 +80,7 @@ public class InGame : MonoBehaviour
                 }
             }
         }
+#endif
     }
 
     public void StartGame(Level level, TitleConstData titleConstData)

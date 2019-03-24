@@ -42,7 +42,7 @@ public class InGameKeyAssignmentGuide : MonoBehaviour
             }
         }
 
-        index = tapIndex;
+        this.index = tapIndex;
         Show();
     }
 
