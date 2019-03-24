@@ -74,7 +74,7 @@ public class ResultView : MonoBehaviour
 
         GetLeaderboard();
 
-        if (Advertisement.IsReady())
+        if (gameEnded && Advertisement.IsReady())
         {
             var options = new ShowOptions();
             Advertisement.Show(options);
