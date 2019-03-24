@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using PlayFab.ClientModels;
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 public class ResultView : MonoBehaviour
 {
@@ -72,6 +73,12 @@ public class ResultView : MonoBehaviour
         returnButton.SetActive(false);
 
         GetLeaderboard();
+
+        if (Advertisement.IsReady())
+        {
+            var options = new ShowOptions();
+            Advertisement.Show(options);
+        }
     }
 
     void GetLeaderboard()
