@@ -27,7 +27,7 @@ public class ScoreUpView : MonoBehaviour
         stringBuilder.Append(scoreBase.ToString());
         if (scoreRate > 1)
         {
-            stringBuilder.AppendFormat(string.Format("X{0}", scoreRate));
+            stringBuilder.AppendFormat("X{0}", scoreRate);
         }
         score.text = stringBuilder.ToString();
         transform.localPosition = localPosition;

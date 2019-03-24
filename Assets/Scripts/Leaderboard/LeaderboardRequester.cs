@@ -45,7 +45,7 @@ public class LeaderboardRequester : MonoBehaviour
         var stringBuilder = new StringBuilder();
         foreach (var statistic in request.Statistics)
         {
-            stringBuilder.AppendFormat(string.Format("{0}:{1}:{2}", statistic.StatisticName, statistic.Version, statistic.Value));
+            stringBuilder.AppendFormat("{0}:{1}:{2}", statistic.StatisticName, statistic.Version, statistic.Value);
         }
         Debug.Log(stringBuilder);
     }
@@ -82,7 +82,7 @@ public class LeaderboardRequester : MonoBehaviour
         var stringBuilder = new StringBuilder();
         foreach (var entry in result.Leaderboard)
         {
-            stringBuilder.AppendFormat(string.Format("{0}:{1}:{2}:{3}\n", entry.Position, entry.StatValue, entry.PlayFabId, entry.DisplayName));
+            stringBuilder.AppendFormat("{0}:{1}:{2}:{3}\n", entry.Position, entry.StatValue, entry.PlayFabId, entry.DisplayName);
         }
         Debug.Log(stringBuilder);
     }
