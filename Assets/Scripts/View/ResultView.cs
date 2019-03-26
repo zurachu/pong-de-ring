@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using PlayFab.ClientModels;
 using UnityEngine;
+#if UNITY_ANDROID || UNITY_IOS
 using UnityEngine.Advertisements;
+#endif
 
 public class ResultView : MonoBehaviour
 {
@@ -74,11 +76,13 @@ public class ResultView : MonoBehaviour
 
         GetLeaderboard();
 
+#if UNITY_ANDROID || UNITY_IOS
         if (gameEnded && Advertisement.IsReady())
         {
             var options = new ShowOptions();
             Advertisement.Show(options);
         }
+#endif
     }
 
     void GetLeaderboard()
