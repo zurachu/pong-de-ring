@@ -15,7 +15,22 @@ public class ErrorDialogView : MonoBehaviour
     public static ErrorDialogView Show(string title, string message, Action onClickRetry, bool cancelable = false)
     {
         var view = Instantiate(Prefab).GetComponent<ErrorDialogView>();
-        view.Initialize(title, message, onClickRetry, cancelable);
+        if (cancelable)
+        {
+            view.Initialize(title, message, onClickRetry, () => {
+            });
+        }
+        else
+        {
+            view.Initialize(title, message, onClickRetry, null);
+        }
+        return view;
+    }
+
+    public static ErrorDialogView Show(string title, string message, Action onClickRetry, Action onClickCancel)
+    {
+        var view = Instantiate(Prefab).GetComponent<ErrorDialogView>();
+        view.Initialize(title, message, onClickRetry, onClickCancel);
         return view;
     }
 
@@ -24,7 +39,7 @@ public class ErrorDialogView : MonoBehaviour
     [SerializeField] Button retryButton;
     [SerializeField] Button cancelButton;
 
-    public void Initialize(string title, string message, Action onClickRetry, bool cancelable = false)
+    void Initialize(string title, string message, Action onClickRetry, Action onClickCancel)
     {
         titleText.text = title;
         messageText.text = message;
@@ -33,9 +48,12 @@ public class ErrorDialogView : MonoBehaviour
             onClickRetry();
         });
 
-        if (cancelable)
+        if (onClickCancel != null)
         {
-            cancelButton.onClick.AddListener(Close);
+            cancelButton.onClick.AddListener(() => {
+                Close();
+                onClickCancel();
+            });
         }
         else
         {

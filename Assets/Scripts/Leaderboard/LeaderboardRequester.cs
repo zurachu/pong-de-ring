@@ -11,7 +11,7 @@ public class LeaderboardRequester : MonoBehaviour
 
     static readonly string StatisticName = "score";
 
-    public void UpdatePlayerStatistic(int value, Action onSuccess)
+    public void UpdatePlayerStatistic(int value, Action onSuccess, Action onCancel = null)
     {
         var request = new UpdatePlayerStatisticsRequest
         {
@@ -34,8 +34,8 @@ public class LeaderboardRequester : MonoBehaviour
                 Debug.LogError(report);
 
                 ErrorDialogView.Show("UpdatePlayerStatistics failed", report, () => {
-                    UpdatePlayerStatistic(value, onSuccess);
-                }, true);
+                    UpdatePlayerStatistic(value, onSuccess, onCancel);
+                }, onCancel);
             });
     }
 
@@ -50,7 +50,7 @@ public class LeaderboardRequester : MonoBehaviour
         Debug.Log(stringBuilder);
     }
 
-    public void Request(Action<List<PlayerLeaderboardEntry>> onReceiveLeaderboard)
+    public void Request(Action<List<PlayerLeaderboardEntry>> onReceiveLeaderboard, Action onCancel = null)
     {
         var connectingView = ConnectingView.Show();
 
@@ -72,8 +72,8 @@ public class LeaderboardRequester : MonoBehaviour
 
                 connectingView.Close();
                 ErrorDialogView.Show("GetLeaderboard failed", report, () => {
-                    Request(onReceiveLeaderboard);
-                }, true);
+                    Request(onReceiveLeaderboard, onCancel);
+                }, onCancel);
             });
     }
 

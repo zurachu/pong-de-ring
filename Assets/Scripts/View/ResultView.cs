@@ -87,7 +87,14 @@ public class ResultView : MonoBehaviour
 
     void GetLeaderboard()
     {
-        leaderboardRequester.Request(SetupLeaderboard);
+        if (gameEnded)
+        {
+            leaderboardRequester.Request(SetupLeaderboard);
+        }
+        else
+        {
+            leaderboardRequester.Request(SetupLeaderboard, OnClickReturn);
+        }
     }
 
     void SetupLeaderboard(List<PlayerLeaderboardEntry> leaderboardEntries)
