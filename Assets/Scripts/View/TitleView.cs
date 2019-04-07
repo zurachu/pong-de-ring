@@ -7,6 +7,7 @@ public class TitleView : MonoBehaviour
 {
     [SerializeField] GameObject clickToStart;
     [SerializeField] GameObject selectLevel;
+    [SerializeField] GameObject privacyPolicyButton;
 
     public static TitleView Show(Transform parent, Action<InGame.Level> onClickStart, Action onClickResult)
     {
@@ -35,7 +36,12 @@ public class TitleView : MonoBehaviour
     void Start()
     {
         clickToStart.SetActive(true);
-        selectLevel.SetActive(false);        
+        selectLevel.SetActive(false);
+#if UNITY_WEBGL
+        privacyPolicyButton.SetActive(false);
+#else
+        privacyPolicyButton.SetActive(true);
+#endif
     }
 
     // Update is called once per frame

@@ -589,6 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickToStart: {fileID: 5780650256330890784}
   selectLevel: {fileID: 7186725917751405249}
+  privacyPolicyButton: {fileID: 3731344968222298074}
 --- !u!1 &1000381802888672890
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +844,7 @@ GameObject:
   - component: {fileID: 7010028569027331300}
   - component: {fileID: 5434786734575503204}
   m_Layer: 5
-  m_Name: Button ChangeDisplayName
+  m_Name: Button PrivacyPolicy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
