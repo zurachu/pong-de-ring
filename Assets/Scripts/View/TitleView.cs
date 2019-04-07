@@ -81,4 +81,9 @@ public class TitleView : MonoBehaviour
 
         onClickResult?.Invoke();
     }
+
+    public void OnClickPrivacyPolicy()
+    {
+        Application.OpenURL("https://zurachu.github.io/pong-de-ring/privacy-policy.html");
+    }
 }
